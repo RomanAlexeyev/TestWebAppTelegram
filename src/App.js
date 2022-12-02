@@ -160,8 +160,7 @@ function App() {
 
   useEffect(() => {
     tg.ready();
-    tg.MainButton.show();
-    tg.BackButton.show();
+    console.logtg.initDataUnsafe
   }, [])
 
   const stepsComponents = {
@@ -295,6 +294,18 @@ function App() {
     setCurrentStep(steps[index - 1]);
   };
   const goToNext = () => {
+    const data = {
+      queryId: tg.initDataUnsafe?.query_id,
+      currentStep: currentStep,
+      info: masterValue
+    }
+    fetch("http://localhost:8000/web-data", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data)
+    })
     const index = steps.indexOf(currentStep);
     setCurrentStep(steps[index + 1]);
   };

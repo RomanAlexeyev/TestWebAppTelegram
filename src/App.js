@@ -293,20 +293,24 @@ function App() {
     setCurrentStep(steps[index - 1]);
   };
   const goToNext = () => {
-    const data = {
-      queryId: tg.initDataUnsafe?.query_id,
-      currentStep: currentStep,
-      info: masterValue
-    }
-    fetch("http://localhost:8000/web-data", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data)
-    })
     const index = steps.indexOf(currentStep);
-    setCurrentStep(steps[index + 1]);
+
+    if (index = steps.length-1) {
+      const data = {
+        queryId: tg.initDataUnsafe?.query_id,
+        currentStep: currentStep,
+        info: masterValue
+      }
+      fetch("http://localhost:8000/web-data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+      })
+    } else {
+      setCurrentStep(steps[index + 1]);
+    }
   };
 
   return (

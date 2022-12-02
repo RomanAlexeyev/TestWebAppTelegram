@@ -295,7 +295,7 @@ function App() {
   const goToNext = () => {
     const index = steps.indexOf(currentStep);
 
-    if (index = steps.length-1) {
+    if (index === steps.length-1) {
       const data = {
         queryId: tg.initDataUnsafe?.query_id,
         currentStep: currentStep,

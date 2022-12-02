@@ -160,7 +160,6 @@ function App() {
 
   useEffect(() => {
     tg.ready();
-    console.logtg.initDataUnsafe
   }, [])
 
   const stepsComponents = {

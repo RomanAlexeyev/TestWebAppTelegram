@@ -30,7 +30,7 @@ export const EmotionsBeforeTournamentQuestion = ({
   return (
     <>
       <div className="question-title">
-        Отлично, а с какими чувствами ты ехал на этот турнир?
+        Отлично, а с какими чувствами ты едешь на этот турнир?
       </div>
       <div className="question-body">
         <HelperTag />

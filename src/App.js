@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 
+import { goToNext, goToPrevious } from "./store/slices/stepSlice";
+import { useDispatch, useSelector } from "react-redux";
+
 import { UilDiary } from "@iconscout/react-unicons";
 import { UilArrowLeft } from "@iconscout/react-unicons";
 import { UilArrowRight } from "@iconscout/react-unicons";
 
+import { Starter } from "./components/stepsPages/Starter";
 import { NameQuestion } from "./components/stepsPages/NameQuestion";
 import { DateQuestion } from "./components/stepsPages/DateQuestion";
 import { EmotionsBeforeTournamentQuestion } from "./components/stepsPages/EmotionsBeforeTournamentQuestion";
@@ -68,6 +72,7 @@ const warmupSummaries = [
 ];
 
 const initialSteps = [
+  "letsTalk",
   "tournamentName",
   "tournamentDate",
   "emotionsBeforeTournament",
@@ -85,8 +90,11 @@ const initialSteps = [
 const tg = window.Telegram.WebApp;
 
 function App() {
-  const [steps, setSteps] = useState(initialSteps);
-  const [currentStep, setCurrentStep] = useState("tournamentName");
+
+  const dispatch = useDispatch();
+  const currentStep = useSelector(state => state.steps.currentStep);
+  // const [steps, setSteps] = useState(initialSteps);
+  // const [currentStep, setCurrentStep] = useState("letsTalk");
   const [nextButtonDisabled, setNextButtonDisabled] = useState(true);
 
   const [masterValue, setMasterValue] = useState({
@@ -133,36 +141,41 @@ function App() {
     }));
   };
 
-  useEffect(() => {
-    const emotionBeforeTournamentArr = [];
-    const emotionsDuringWarmupArr = [];
+  // useEffect(() => {
+  //   const emotionBeforeTournamentArr = [];
+  //   const emotionsDuringWarmupArr = [];
 
-    const _initialSteps = [...initialSteps];
+  //   const _initialSteps = [...initialSteps];
 
-    if (!!masterValue.emotionsBeforeTournament.length) {
-      masterValue.emotionsBeforeTournament.map((code) => {
-        emotionBeforeTournamentArr.push("emotionBeforeTournament_" + code);
-      });
-    }
-    _initialSteps.splice(3, 0, ...emotionBeforeTournamentArr);
+  //   if (!!masterValue.emotionsBeforeTournament.length) {
+  //     masterValue.emotionsBeforeTournament.map((code) => {
+  //       emotionBeforeTournamentArr.push("emotionBeforeTournament_" + code);
+  //     });
+  //   }
+  //   _initialSteps.splice(3, 0, ...emotionBeforeTournamentArr);
 
-    if (!!masterValue.emotionsDuringWarmup.length) {
-      masterValue.emotionsDuringWarmup.map((code) => {
-        emotionsDuringWarmupArr.push("emotionsDuringWarmup_" + code);
-      });
-    }
+  //   if (!!masterValue.emotionsDuringWarmup.length) {
+  //     masterValue.emotionsDuringWarmup.map((code) => {
+  //       emotionsDuringWarmupArr.push("emotionsDuringWarmup_" + code);
+  //     });
+  //   }
 
-    _initialSteps.splice(11 + emotionBeforeTournamentArr.length, 0, ...emotionsDuringWarmupArr);
+  //   _initialSteps.splice(11 + emotionBeforeTournamentArr.length, 0, ...emotionsDuringWarmupArr);
 
-    setSteps(_initialSteps);
+  //   setSteps(_initialSteps);
 
-  }, [masterValue.emotionsBeforeTournament, masterValue.emotionsDuringWarmup]);
+  // }, [masterValue.emotionsBeforeTournament, masterValue.emotionsDuringWarmup]);
 
   useEffect(() => {
     tg.ready();
   }, [])
 
   const stepsComponents = {
+    letsTalk: (
+      <Starter
+        setNextButtonDisabled={setNextButtonDisabled}
+      />
+    ),
     tournamentName: (
       <NameQuestion
         masterValue={masterValue}
@@ -288,31 +301,6 @@ function App() {
     ),
   };
 
-  const goToPrevious = () => {
-    const index = steps.indexOf(currentStep);
-    setCurrentStep(steps[index - 1]);
-  };
-  const goToNext = () => {
-    const index = steps.indexOf(currentStep);
-
-    if (index === steps.length-1) {
-      const data = {
-        queryId: tg.initDataUnsafe?.query_id,
-        currentStep: currentStep,
-        info: masterValue
-      }
-      fetch("http://localhost:8000/web-data", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data)
-      })
-    } else {
-      setCurrentStep(steps[index + 1]);
-    }
-  };
-
   return (
     <div className="container">
       <div className="header">
@@ -325,15 +313,15 @@ function App() {
         <div className="buttons-bar">
           <button
             className="button-previous"
-            disabled={currentStep === "tournamentName"}
-            onClick={goToPrevious}
+            disabled={currentStep === "letsTalk"}
+            onClick={() => dispatch(goToPrevious())}
           >
             <UilArrowLeft />
           </button>
           <button
             className="button-next"
             disabled={nextButtonDisabled}
-            onClick={goToNext}
+            onClick={() => dispatch(goToNext())}
           >
             <span>Далее</span>
             <UilArrowRight />

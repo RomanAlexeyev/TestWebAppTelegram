@@ -10,7 +10,7 @@ export const NameQuestion = ({
   }, [masterValue.tournamentName]);
   return (
     <>
-      <div className="question-title">Как назывался турнир?</div>
+      <div className="question-title">Начнем с того, что было до турнира. Как назывался турнир?</div>
       <div className="question-body">
         <input
           type="text"

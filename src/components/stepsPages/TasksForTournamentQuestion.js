@@ -10,7 +10,7 @@ export const TasksForTournamentQuestion = ({
   }, [masterValue.tasksForTournament]);
   return (
     <>
-      <div className="question-title">Какие задачи на этот турнир ты перед собой ставишь?</div>
+      <div className="question-title">Супер! Какие задачи на турнир ты перед собой поставил?</div>
       <div className="question-body">
         <textarea
           rows="10"

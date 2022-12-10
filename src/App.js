@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 
-import { goToNext, goToPrevious } from "./store/slices/stepSlice";
+import { goToNext, goToPrevious, setSteps } from "./store/slices/stepSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import { UilDiary } from "@iconscout/react-unicons";
@@ -13,22 +13,31 @@ import { NameQuestion } from "./components/stepsPages/NameQuestion";
 import { DateQuestion } from "./components/stepsPages/DateQuestion";
 import { EmotionsBeforeTournamentQuestion } from "./components/stepsPages/EmotionsBeforeTournamentQuestion";
 import { EmotionsOptionQuestion } from "./components/stepsPages/EmotionsOptionQuestion";
+import { SenseOfDutyQuestion } from "./components/stepsPages/SenseOfDutyQuestion";
+import { SenseOfDutyOptionsQuestion } from "./components/stepsPages/SenseOfDutyOptionsQuestion";
 import { InnerLevelOfReadinessQuestion } from "./components/stepsPages/InnerLevelOfReadinessQuestion";
 import { ReadinessLevelRatingQuestion } from "./components/stepsPages/ReadinessLevelRatingQuestion";
 import { HappinessBeforeTournamentLevelRatingQuestion } from "./components/stepsPages/HappinessBeforeTournamentLevelRatingQuestion";
 import { AnxietyBeforeTournamentLevelRatingQuestion } from "./components/stepsPages/AnxietyBeforeTournamentLevelRatingQuestion";
 import { TasksForTournamentQuestion } from "./components/stepsPages/TasksForTournamentQuestion";
-import { LetsTalkAboutWarmupQuestion } from "./components/stepsPages/LetsTalkAboutWarmupQuestion";
-import { WarmupWaysQuestion } from "./components/stepsPages/WarmupWaysQuestion";
-import { EmotionsDuringWarmupQuestion } from "./components/stepsPages/EmotionsDuringWarmupQuestion";
-import { WarmupSummaryQuestion } from "./components/stepsPages/WarmupSummaryQuestion";
+// import { LetsTalkAboutWarmupQuestion } from "./components/stepsPages/LetsTalkAboutWarmupQuestion";
+// import { WarmupWaysQuestion } from "./components/stepsPages/WarmupWaysQuestion";
+// import { EmotionsDuringWarmupQuestion } from "./components/stepsPages/EmotionsDuringWarmupQuestion";
+// import { WarmupSummaryQuestion } from "./components/stepsPages/WarmupSummaryQuestion";
 
 import {
   joyEmotions,
   fearEmotions,
+  despairEmotions,
+  shameEmotions,
+  angerEmotions,
+  loathingEmotions,
+  indifferenceEmotions,
   warmupJoyEmotions,
   warmupFearEmotions
 } from "./components/elements/emotionsDescriptions";
+
+import { initialSteps } from "./store/slices/stepSlice";
 
 const warmupWays = [
   {
@@ -71,30 +80,12 @@ const warmupSummaries = [
   },
 ];
 
-const initialSteps = [
-  "letsTalk",
-  "tournamentName",
-  "tournamentDate",
-  "emotionsBeforeTournament",
-  "innerLevelOfReadiness",
-  "readinessLevelRating",
-  "happinessBeforeTournamentLevelRating",
-  "anxietyBeforeTournamentLevelRating",
-  "tasksForTournament",
-  "letsTalkAboutWarmup",
-  "warmupWays",
-  "emotionsDuringWarmup",
-  "warmupSummary",
-];
-
 const tg = window.Telegram.WebApp;
 
 function App() {
 
   const dispatch = useDispatch();
   const currentStep = useSelector(state => state.steps.currentStep);
-  // const [steps, setSteps] = useState(initialSteps);
-  // const [currentStep, setCurrentStep] = useState("letsTalk");
   const [nextButtonDisabled, setNextButtonDisabled] = useState(true);
 
   const [masterValue, setMasterValue] = useState({
@@ -104,25 +95,28 @@ function App() {
     emotionsBeforeTournamentDetails: {
       joy: [],
       fear: [],
-      sorrow: [],
+      despair: [],
+      shame: [],
       anger: [],
       loathing: [],
+      indifference: [],
     },
-    // hyperResponsibility: null,
+    senseOfDuty: null,
+    senseOfDutyOptions: [],
     readinessLevelRating: 0,
     happinessBeforeTournamentLevelRating: 0,
     anxietyBeforeTournamentLevelRating: 0,
     tasksForTournament: "",
-    warmupWays: "",
-    emotionsDuringWarmup: [],
-    emotionsDuringWarmupDetails: {
-      joy: [],
-      fear: [],
-      sorrow: [],
-      anger: [],
-      loathing: [],
-    },
-    warmupSummary: "",
+    // warmupWays: "",
+    // emotionsDuringWarmup: [],
+    // emotionsDuringWarmupDetails: {
+    //   joy: [],
+    //   fear: [],
+    //   sorrow: [],
+    //   anger: [],
+    //   loathing: [],
+    // },
+    // warmupSummary: "",
   });
 
   const changeMasterValue = (key, value) => {
@@ -141,34 +135,50 @@ function App() {
     }));
   };
 
-  // useEffect(() => {
-  //   const emotionBeforeTournamentArr = [];
-  //   const emotionsDuringWarmupArr = [];
-
-  //   const _initialSteps = [...initialSteps];
-
-  //   if (!!masterValue.emotionsBeforeTournament.length) {
-  //     masterValue.emotionsBeforeTournament.map((code) => {
-  //       emotionBeforeTournamentArr.push("emotionBeforeTournament_" + code);
-  //     });
-  //   }
-  //   _initialSteps.splice(3, 0, ...emotionBeforeTournamentArr);
-
-  //   if (!!masterValue.emotionsDuringWarmup.length) {
-  //     masterValue.emotionsDuringWarmup.map((code) => {
-  //       emotionsDuringWarmupArr.push("emotionsDuringWarmup_" + code);
-  //     });
-  //   }
-
-  //   _initialSteps.splice(11 + emotionBeforeTournamentArr.length, 0, ...emotionsDuringWarmupArr);
-
-  //   setSteps(_initialSteps);
-
-  // }, [masterValue.emotionsBeforeTournament, masterValue.emotionsDuringWarmup]);
+  useEffect(() => {
+    if (!masterValue.senseOfDuty) {
+      setMasterValue((prev) => ({
+        ...prev,
+        senseOfDutyOptions: [],
+      }));
+    }
+  }, [masterValue.senseOfDuty])
 
   useEffect(() => {
-    tg.ready();
-  }, [])
+    const emotionBeforeTournamentArr = [];
+    let senseOfDutyOptions = 0;
+    // const emotionsDuringWarmupArr = [];
+
+    const _initialSteps = [...initialSteps];
+
+    if (!!masterValue.emotionsBeforeTournament.length) {
+      masterValue.emotionsBeforeTournament.map((code) => {
+        emotionBeforeTournamentArr.push("emotionBeforeTournament_" + code);
+      });
+    }
+    _initialSteps.splice(4, 0, ...emotionBeforeTournamentArr);
+
+    if (!!masterValue.senseOfDuty) {
+      senseOfDutyOptions = 1;
+      _initialSteps.splice(5 + emotionBeforeTournamentArr.length, 0, "senseOfDutyOptions");
+    }
+
+    // if (!!masterValue.emotionsDuringWarmup.length) {
+    //   masterValue.emotionsDuringWarmup.map((code) => {
+    //     emotionsDuringWarmupArr.push("emotionsDuringWarmup_" + code);
+    //   });
+    // }
+
+    // _initialSteps.splice(13 + emotionBeforeTournamentArr.length + senseOfDutyOptions, 0, ...emotionsDuringWarmupArr);
+
+    dispatch(setSteps(_initialSteps));
+
+  }, [
+    masterValue.emotionsBeforeTournament,
+    masterValue.senseOfDuty,
+    // masterValue.emotionsDuringWarmup
+  ]);
+
 
   const stepsComponents = {
     letsTalk: (
@@ -217,6 +227,70 @@ function App() {
         emotionsOptions={fearEmotions}
       />
     ),
+    emotionBeforeTournament_despair: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsBeforeTournamentDetails"}
+        emotion={"despair"}
+        emotionsOptions={despairEmotions}
+      />
+    ),
+    emotionBeforeTournament_shame: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsBeforeTournamentDetails"}
+        emotion={"shame"}
+        emotionsOptions={shameEmotions}
+      />
+    ),
+    emotionBeforeTournament_anger: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsBeforeTournamentDetails"}
+        emotion={"anger"}
+        emotionsOptions={angerEmotions}
+      />
+    ),
+    emotionBeforeTournament_loathing: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsBeforeTournamentDetails"}
+        emotion={"loathing"}
+        emotionsOptions={loathingEmotions}
+      />
+    ),
+    emotionBeforeTournament_indifference: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsBeforeTournamentDetails"}
+        emotion={"indifference"}
+        emotionsOptions={indifferenceEmotions}
+      />
+    ),
+    senseOfDuty: (
+      <SenseOfDutyQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+      />
+    ),
+    senseOfDutyOptions: (
+      <SenseOfDutyOptionsQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+      />
+    ),
     innerLevelOfReadiness: (
       <InnerLevelOfReadinessQuestion
         setNextButtonDisabled={setNextButtonDisabled}
@@ -250,56 +324,60 @@ function App() {
         setNextButtonDisabled={setNextButtonDisabled}
       />
     ),
-    letsTalkAboutWarmup: (
-      <LetsTalkAboutWarmupQuestion
-        setNextButtonDisabled={setNextButtonDisabled}
-      />
-    ),
-    warmupWays: (
-      <WarmupWaysQuestion
-        masterValue={masterValue}
-        changeMasterValue={changeMasterValue}
-        warmupWays={warmupWays}
-        setNextButtonDisabled={setNextButtonDisabled}
-      />
-    ),
-    emotionsDuringWarmup: (
-      <EmotionsDuringWarmupQuestion
-        masterValue={masterValue}
-        changeMasterValue={changeMasterValue}
-        warmupWays={warmupWays}
-        setNextButtonDisabled={setNextButtonDisabled}
-      />
-    ),
-    emotionsDuringWarmup_joy: (
-      <EmotionsOptionQuestion
-        masterValue={masterValue}
-        changeMasterValueObject={changeMasterValueObject}
-        setNextButtonDisabled={setNextButtonDisabled}
-        masterValueKey={"emotionsDuringWarmupDetails"}
-        emotion={"joy"}
-        emotionsOptions={warmupJoyEmotions}
-      />
-    ),
-    emotionsDuringWarmup_fear: (
-      <EmotionsOptionQuestion
-        masterValue={masterValue}
-        changeMasterValueObject={changeMasterValueObject}
-        setNextButtonDisabled={setNextButtonDisabled}
-        masterValueKey={"emotionsDuringWarmupDetails"}
-        emotion={"fear"}
-        emotionsOptions={warmupFearEmotions}
-      />
-    ),
-    warmupSummary: (
-      <WarmupSummaryQuestion
-      masterValue={masterValue}
-      changeMasterValue={changeMasterValue}
-      warmupSummaries={warmupSummaries}
-      setNextButtonDisabled={setNextButtonDisabled}
-      />
-    ),
+    // letsTalkAboutWarmup: (
+    //   <LetsTalkAboutWarmupQuestion
+    //     setNextButtonDisabled={setNextButtonDisabled}
+    //   />
+    // ),
+    // warmupWays: (
+    //   <WarmupWaysQuestion
+    //     masterValue={masterValue}
+    //     changeMasterValue={changeMasterValue}
+    //     warmupWays={warmupWays}
+    //     setNextButtonDisabled={setNextButtonDisabled}
+    //   />
+    // ),
+    // emotionsDuringWarmup: (
+    //   <EmotionsDuringWarmupQuestion
+    //     masterValue={masterValue}
+    //     changeMasterValue={changeMasterValue}
+    //     warmupWays={warmupWays}
+    //     setNextButtonDisabled={setNextButtonDisabled}
+    //   />
+    // ),
+    // emotionsDuringWarmup_joy: (
+    //   <EmotionsOptionQuestion
+    //     masterValue={masterValue}
+    //     changeMasterValueObject={changeMasterValueObject}
+    //     setNextButtonDisabled={setNextButtonDisabled}
+    //     masterValueKey={"emotionsDuringWarmupDetails"}
+    //     emotion={"joy"}
+    //     emotionsOptions={warmupJoyEmotions}
+    //   />
+    // ),
+    // emotionsDuringWarmup_fear: (
+    //   <EmotionsOptionQuestion
+    //     masterValue={masterValue}
+    //     changeMasterValueObject={changeMasterValueObject}
+    //     setNextButtonDisabled={setNextButtonDisabled}
+    //     masterValueKey={"emotionsDuringWarmupDetails"}
+    //     emotion={"fear"}
+    //     emotionsOptions={warmupFearEmotions}
+    //   />
+    // ),
+    // warmupSummary: (
+    //   <WarmupSummaryQuestion
+    //     masterValue={masterValue}
+    //     changeMasterValue={changeMasterValue}
+    //     warmupSummaries={warmupSummaries}
+    //     setNextButtonDisabled={setNextButtonDisabled}
+    //   />
+    // ),
   };
+
+  useEffect(() => {
+    tg.ready();
+  }, [])
 
   return (
     <div className="container">

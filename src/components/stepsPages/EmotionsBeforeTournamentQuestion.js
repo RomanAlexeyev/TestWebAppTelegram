@@ -53,7 +53,6 @@ export const EmotionsBeforeTournamentQuestion = ({
               </div>
               <div className="checkbox-text">
                 <div className="title">{emotion.title}</div>
-                <div className="description">{emotion.description}</div>
               </div>
             </div>
           );

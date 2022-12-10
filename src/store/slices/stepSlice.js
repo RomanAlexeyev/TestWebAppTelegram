@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialSteps = [
+export const initialSteps = [
     "letsTalk",
     "tournamentName",
     "tournamentDate",
     "emotionsBeforeTournament",
+    "senseOfDuty",
     "innerLevelOfReadiness",
     "readinessLevelRating",
     "happinessBeforeTournamentLevelRating",
@@ -30,6 +31,9 @@ const stepSlice = createSlice({
         goToNext (state) {
             const index = state.steps.indexOf(state.currentStep);
             state.currentStep = state.steps[index + 1];
+        },
+        setSteps (state, action) {
+            state.steps = action.payload;
         }
         
         //     if (index === state.steps.length-1) {
@@ -52,5 +56,5 @@ const stepSlice = createSlice({
     }
 });
 
-export const { goToPrevious, goToNext } = stepSlice.actions;
+export const { goToPrevious, goToNext, setSteps } = stepSlice.actions;
 export default stepSlice.reducer;

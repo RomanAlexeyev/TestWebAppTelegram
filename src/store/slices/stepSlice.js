@@ -11,10 +11,19 @@ export const initialSteps = [
     "happinessBeforeTournamentLevelRating",
     "anxietyBeforeTournamentLevelRating",
     "tasksForTournament",
-    "letsTalkAboutWarmup",
-    "warmupWays",
-    "emotionsDuringWarmup",
-    "warmupSummary",
+    "mostInterestingMatch",
+    "mostInterestingMatchOpponents",
+    "mostInterestingMatchVictory",
+    "mostInterestingMatchResult",
+    "mostInterestingMatchBeforeEmotions",
+    "innerLevelOfReadinessBeforeMatch",
+    "readinessLevelBeforeMatchRating",
+    "happinessBeforeMatchLevelRating",
+    "anxietyBeforeMatchLevelRating",
+    // "letsTalkAboutWarmup",
+    // "warmupWays",
+    // "emotionsDuringWarmup",
+    // "warmupSummary",
   ];
 
 const stepSlice = createSlice({

@@ -5,37 +5,39 @@ import { HelperTag } from "../elements/HelperTag";
 
 import { emotions } from "../elements/emotionsDescriptions";
 
-export const EmotionsBeforeTournamentQuestion = ({
+export const EmotionsBeforeQuestion = ({
   masterValue,
   changeMasterValue,
   setNextButtonDisabled,
+  masterValueKey,
+  title
 }) => {
 
 
   const checkboxHandler = (code) => {
-    const array = [...masterValue.emotionsBeforeTournament];
+    const array = [...masterValue[masterValueKey]];
     const index = array.indexOf(code);
     if (index < 0) {
       array.push(code);
     } else {
       array.splice(index, 1);
     }
-    changeMasterValue("emotionsBeforeTournament", array);
+    changeMasterValue(masterValueKey, array);
   };
 
   useEffect(() => {
-    setNextButtonDisabled(!masterValue.emotionsBeforeTournament.length);
-  }, [masterValue.emotionsBeforeTournament]);
+    setNextButtonDisabled(!masterValue[masterValueKey].length);
+  }, [masterValue[masterValueKey]]);
 
   return (
     <>
       <div className="question-title">
-        Отлично, а с какими чувствами ты едешь на этот турнир?
+        {title}
       </div>
       <div className="question-body">
         <HelperTag />
         {emotions.map((emotion) => {
-          const isChecked = masterValue.emotionsBeforeTournament.includes(
+          const isChecked = masterValue[masterValueKey].includes(
             emotion.code
           );
           return (

@@ -8,10 +8,11 @@ import { UilDiary } from "@iconscout/react-unicons";
 import { UilArrowLeft } from "@iconscout/react-unicons";
 import { UilArrowRight } from "@iconscout/react-unicons";
 
-import { Starter } from "./components/stepsPages/Starter";
+import { Intermediator } from "./components/stepsPages/Intermediator";
+import { LevelRatingQuestion } from "./components/stepsPages/LevelRatingQuestion";
 import { NameQuestion } from "./components/stepsPages/NameQuestion";
 import { DateQuestion } from "./components/stepsPages/DateQuestion";
-import { EmotionsBeforeTournamentQuestion } from "./components/stepsPages/EmotionsBeforeTournamentQuestion";
+import { EmotionsBeforeQuestion } from "./components/stepsPages/EmotionsBeforeQuestion";
 import { EmotionsOptionQuestion } from "./components/stepsPages/EmotionsOptionQuestion";
 import { SenseOfDutyQuestion } from "./components/stepsPages/SenseOfDutyQuestion";
 import { SenseOfDutyOptionsQuestion } from "./components/stepsPages/SenseOfDutyOptionsQuestion";
@@ -20,19 +21,25 @@ import { ReadinessLevelRatingQuestion } from "./components/stepsPages/ReadinessL
 import { HappinessBeforeTournamentLevelRatingQuestion } from "./components/stepsPages/HappinessBeforeTournamentLevelRatingQuestion";
 import { AnxietyBeforeTournamentLevelRatingQuestion } from "./components/stepsPages/AnxietyBeforeTournamentLevelRatingQuestion";
 import { TasksForTournamentQuestion } from "./components/stepsPages/TasksForTournamentQuestion";
+import { OpponentsQuestion } from "./components/stepsPages/OpponentsQuestion";
+import { DidYouWinQuestion } from "./components/stepsPages/DidYouWinQuestion";
+import { ResultQuestion } from "./components/stepsPages/ResultQuestion";
+import { BreakingPointQuestion } from "./components/stepsPages/BreakingPointQuestion";
+import { BreakingPointDirectionQuestion } from "./components/stepsPages/BreakingPointDirectionQuestion";
+import { BreakingPointCausesQuestion } from "./components/stepsPages/BreakingPointCausesQuestion";
+import { SenseOfDutyDuringMatchQuestion } from "./components/stepsPages/SenseOfDutyDuringMatchQuestion";
+
+
+
 // import { LetsTalkAboutWarmupQuestion } from "./components/stepsPages/LetsTalkAboutWarmupQuestion";
 // import { WarmupWaysQuestion } from "./components/stepsPages/WarmupWaysQuestion";
 // import { EmotionsDuringWarmupQuestion } from "./components/stepsPages/EmotionsDuringWarmupQuestion";
 // import { WarmupSummaryQuestion } from "./components/stepsPages/WarmupSummaryQuestion";
 
 import {
-  joyEmotions,
-  fearEmotions,
-  despairEmotions,
-  shameEmotions,
-  angerEmotions,
-  loathingEmotions,
-  indifferenceEmotions,
+  beforeTournamentEmotions,
+  mostInterestingMatchBeforeEmotions,
+  breakingPointEmotions,
   warmupJoyEmotions,
   warmupFearEmotions
 } from "./components/elements/emotionsDescriptions";
@@ -107,16 +114,66 @@ function App() {
     happinessBeforeTournamentLevelRating: 0,
     anxietyBeforeTournamentLevelRating: 0,
     tasksForTournament: "",
-    // warmupWays: "",
-    // emotionsDuringWarmup: [],
-    // emotionsDuringWarmupDetails: {
-    //   joy: [],
-    //   fear: [],
-    //   sorrow: [],
-    //   anger: [],
-    //   loathing: [],
-    // },
-    // warmupSummary: "",
+    mostInterestingMatchOpponents: "",
+    mostInterestingMatchVictory: null,
+    mostInterestingMatchResult: "",
+    mostInterestingMatchBeforeEmotions: [],
+    mostInterestingMatchBeforeEmotionsDetails: {
+      joy: [],
+      fear: [],
+      despair: [],
+      shame: [],
+      anger: [],
+      loathing: [],
+      indifference: [],
+    },
+    readinessLevelBeforeMatchRating: 0,
+    happinessBeforeMatchLevelRating: 0,
+    anxietyBeforeMatchLevelRating: 0,
+    tasksForThisMatch: "",
+    breakingPoint: null,
+    emotionsDuringMatch: [],
+    emotionsBeforeBreakingPoint: [],
+    emotionsDuringMatchDetails: {
+      joy: [],
+      fear: [],
+      despair: [],
+      shame: [],
+      anger: [],
+      loathing: [],
+      indifference: [],
+    },
+    emotionsBeforeBreakingPointDetails: {
+      joy: [],
+      fear: [],
+      despair: [],
+      shame: [],
+      anger: [],
+      loathing: [],
+      indifference: [],
+    },
+    satisfactionDuringMatchRating: 0,
+    happinessDuringMatchRating: 0,
+    anxietyDuringMatchRating: 0,
+    breakingPointDirection: null,
+    breakingPointCauses: [],
+    satisfactionBeforeBreakingPointRating: 0,
+    happinessBeforeBreakingPointRating: 0,
+    anxietyBeforeBreakingPointRating: 0,
+    emotionsAfterBreakingPoint: [],
+    emotionsAfterBreakingPointDetails: {
+      joy: [],
+      fear: [],
+      despair: [],
+      shame: [],
+      anger: [],
+      loathing: [],
+      indifference: [],
+    },
+    satisfactionAfterBreakingPointRating: 0,
+    happinessAfterBreakingPointRating: 0,
+    anxietyAfterBreakingPointRating: 0,
+    senseOfDutyDuringMatch: null,
   });
 
   const changeMasterValue = (key, value) => {
@@ -146,43 +203,159 @@ function App() {
 
   useEffect(() => {
     const emotionBeforeTournamentArr = [];
-    let senseOfDutyOptions = 0;
-    // const emotionsDuringWarmupArr = [];
+    const mostInterestingMatchBeforeEmotionsArr = [];
+    const emotionsDuringMatchArr = [];
+    const emotionsBeforeBreakingPointArr = [];
+    const emotionsAfterBreakingPointArr = [];
+    let senseOfDutyOptions = false;
 
-    const _initialSteps = [...initialSteps];
+    const chunk_5_initialNoBreakingPoint = ["emotionsDuringMatch",
+      "satisfactionDuringMatchRating",
+      "happinessDuringMatchRating",
+      "anxietyDuringMatchRating"];
+    const chunk_5_initialBreakingPoint = ["emotionsBeforeBreakingPoint",
+      "breakingPointDirection",
+      "breakingPointCauses",
+      "satisfactionBeforeBreakingPointRating",
+      "happinessBeforeBreakingPointRating",
+      "anxietyBeforeBreakingPointRating",
+      "emotionsAfterBreakingPoint",
+      "satisfactionAfterBreakingPointRating",
+      "happinessAfterBreakingPointRating",
+      "anxietyAfterBreakingPointRating",
+    ];
+
+    const steps = {
+      chunk_1: [
+        "letsTalk",
+        "tournamentName",
+        "tournamentDate",
+        "emotionsBeforeTournament"
+      ],
+      chunk_2: [
+        "senseOfDuty",
+      ],
+      chunk_3: [
+        "innerLevelOfReadiness",
+        "readinessLevelRating",
+        "happinessBeforeTournamentLevelRating",
+        "anxietyBeforeTournamentLevelRating",
+        "tasksForTournament",
+        "mostInterestingMatch",
+        "mostInterestingMatchOpponents",
+        "mostInterestingMatchVictory",
+        "mostInterestingMatchResult",
+        "mostInterestingMatchBeforeEmotions",
+      ],
+      chunk_4: [
+        "innerLevelOfReadinessBeforeMatch",
+        "readinessLevelBeforeMatchRating",
+        "happinessBeforeMatchLevelRating",
+        "anxietyBeforeMatchLevelRating",
+        "tasksForThisMatch",
+        "letsTalkAboutThisMatch",
+        "breakingPoint"
+      ],
+      chunk_5: [],
+      chunk_6: [
+        "senseOfDutyDuringMatch",
+      ],
+    }
 
     if (!!masterValue.emotionsBeforeTournament.length) {
       masterValue.emotionsBeforeTournament.map((code) => {
         emotionBeforeTournamentArr.push("emotionBeforeTournament_" + code);
       });
     }
-    _initialSteps.splice(4, 0, ...emotionBeforeTournamentArr);
 
     if (!!masterValue.senseOfDuty) {
-      senseOfDutyOptions = 1;
-      _initialSteps.splice(5 + emotionBeforeTournamentArr.length, 0, "senseOfDutyOptions");
+      steps.chunk_2.push("senseOfDutyOptions");
     }
 
-    // if (!!masterValue.emotionsDuringWarmup.length) {
-    //   masterValue.emotionsDuringWarmup.map((code) => {
-    //     emotionsDuringWarmupArr.push("emotionsDuringWarmup_" + code);
-    //   });
-    // }
+    if (!!masterValue.mostInterestingMatchBeforeEmotions.length) {
+      masterValue.mostInterestingMatchBeforeEmotions.map((code) => {
+        mostInterestingMatchBeforeEmotionsArr.push("mostInterestingMatchBeforeEmotion_" + code);
+      });
+    }
 
-    // _initialSteps.splice(13 + emotionBeforeTournamentArr.length + senseOfDutyOptions, 0, ...emotionsDuringWarmupArr);
+    if (masterValue.breakingPoint === true) {
+      steps.chunk_5 = chunk_5_initialBreakingPoint;
+      // setMasterValue(prev => ({
+      //   ...prev, 
+      //   emotionsDuringMatch: []
+      // }))
+    } else if (masterValue.breakingPoint === false) {
+      steps.chunk_5 = chunk_5_initialNoBreakingPoint;
+      // setMasterValue(prev => ({
+      //   ...prev, 
+      //   emotionsBeforeBreakingPoint: [],
+      //   emotionsAfterBreakingPoint: [],
+      // }))
+    } else {
+      steps.chunk_5 = [];
+      // setMasterValue(prev => ({
+      //   ...prev, 
+      //   emotionsDuringMatch: [],
+      //   emotionsBeforeBreakingPoint: [],
+      //   emotionsAfterBreakingPoint: [],
+      // }))
+    }
 
-    dispatch(setSteps(_initialSteps));
+    if (!!masterValue.emotionsDuringMatch.length) {
+      masterValue.emotionsDuringMatch.map((code) => {
+        emotionsDuringMatchArr.push("emotionDuringMatch_" + code);
+      });
+      chunk_5_initialNoBreakingPoint.splice(1, 0, ...emotionsDuringMatchArr);
+      steps.chunk_5 = chunk_5_initialNoBreakingPoint;
+    }
+
+    if (!!masterValue.emotionsBeforeBreakingPoint.length) {
+      masterValue.emotionsBeforeBreakingPoint.map((code) => {
+        emotionsBeforeBreakingPointArr.push("emotionBeforeBreakingPoint_" + code);
+      });
+      chunk_5_initialBreakingPoint.splice(1, 0, ...emotionsBeforeBreakingPointArr);
+      steps.chunk_5 = chunk_5_initialBreakingPoint;
+    }
+    if (!!masterValue.emotionsAfterBreakingPoint.length) {
+      masterValue.emotionsAfterBreakingPoint.map((code) => {
+        emotionsAfterBreakingPointArr.push("emotionAfterBreakingPoint_" + code);
+      });
+      chunk_5_initialBreakingPoint.splice(7 + emotionsBeforeBreakingPointArr.length, 0, ...emotionsAfterBreakingPointArr);
+      steps.chunk_5 = chunk_5_initialBreakingPoint;
+    }
+
+    if (!!masterValue.senseOfDutyDuringMatch) {
+      steps.chunk_6.push("senseOfDutyDuringMatchOptions");
+    }
+
+    const resultSteps = [
+      ...steps.chunk_1,
+      ...emotionBeforeTournamentArr,
+      ...steps.chunk_2,
+      ...steps.chunk_3,
+      ...mostInterestingMatchBeforeEmotionsArr,
+      ...steps.chunk_4,
+      ...steps.chunk_5,
+      ...steps.chunk_6
+    ];
+    dispatch(setSteps(resultSteps));
 
   }, [
     masterValue.emotionsBeforeTournament,
     masterValue.senseOfDuty,
+    masterValue.mostInterestingMatchBeforeEmotions,
+    masterValue.breakingPoint,
+    masterValue.emotionsDuringMatch,
+    masterValue.emotionsBeforeBreakingPoint,
+    masterValue.emotionsAfterBreakingPoint,
     // masterValue.emotionsDuringWarmup
   ]);
 
 
   const stepsComponents = {
     letsTalk: (
-      <Starter
+      <Intermediator
+        title="Привет, ты сыграл турнир, давай поговорим о нем?"
         setNextButtonDisabled={setNextButtonDisabled}
       />
     ),
@@ -201,10 +374,12 @@ function App() {
       />
     ),
     emotionsBeforeTournament: (
-      <EmotionsBeforeTournamentQuestion
+      <EmotionsBeforeQuestion
         masterValue={masterValue}
         changeMasterValue={changeMasterValue}
         setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey="emotionsBeforeTournament"
+        title="Отлично, а с какими чувствами ты едешь на этот турнир?"
       />
     ),
     emotionBeforeTournament_joy: (
@@ -214,7 +389,7 @@ function App() {
         setNextButtonDisabled={setNextButtonDisabled}
         masterValueKey={"emotionsBeforeTournamentDetails"}
         emotion={"joy"}
-        emotionsOptions={joyEmotions}
+        emotionsOptions={beforeTournamentEmotions.joy}
       />
     ),
     emotionBeforeTournament_fear: (
@@ -224,7 +399,7 @@ function App() {
         setNextButtonDisabled={setNextButtonDisabled}
         masterValueKey={"emotionsBeforeTournamentDetails"}
         emotion={"fear"}
-        emotionsOptions={fearEmotions}
+        emotionsOptions={beforeTournamentEmotions.fear}
       />
     ),
     emotionBeforeTournament_despair: (
@@ -234,7 +409,7 @@ function App() {
         setNextButtonDisabled={setNextButtonDisabled}
         masterValueKey={"emotionsBeforeTournamentDetails"}
         emotion={"despair"}
-        emotionsOptions={despairEmotions}
+        emotionsOptions={beforeTournamentEmotions.despair}
       />
     ),
     emotionBeforeTournament_shame: (
@@ -244,7 +419,7 @@ function App() {
         setNextButtonDisabled={setNextButtonDisabled}
         masterValueKey={"emotionsBeforeTournamentDetails"}
         emotion={"shame"}
-        emotionsOptions={shameEmotions}
+        emotionsOptions={beforeTournamentEmotions.shame}
       />
     ),
     emotionBeforeTournament_anger: (
@@ -254,7 +429,7 @@ function App() {
         setNextButtonDisabled={setNextButtonDisabled}
         masterValueKey={"emotionsBeforeTournamentDetails"}
         emotion={"anger"}
-        emotionsOptions={angerEmotions}
+        emotionsOptions={beforeTournamentEmotions.anger}
       />
     ),
     emotionBeforeTournament_loathing: (
@@ -264,7 +439,7 @@ function App() {
         setNextButtonDisabled={setNextButtonDisabled}
         masterValueKey={"emotionsBeforeTournamentDetails"}
         emotion={"loathing"}
-        emotionsOptions={loathingEmotions}
+        emotionsOptions={beforeTournamentEmotions.loathing}
       />
     ),
     emotionBeforeTournament_indifference: (
@@ -274,7 +449,7 @@ function App() {
         setNextButtonDisabled={setNextButtonDisabled}
         masterValueKey={"emotionsBeforeTournamentDetails"}
         emotion={"indifference"}
-        emotionsOptions={indifferenceEmotions}
+        emotionsOptions={beforeTournamentEmotions.indifference}
       />
     ),
     senseOfDuty: (
@@ -297,24 +472,36 @@ function App() {
       />
     ),
     readinessLevelRating: (
-      <ReadinessLevelRatingQuestion
+      <LevelRatingQuestion
         masterValue={masterValue}
         changeMasterValue={changeMasterValue}
         setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"readinessLevelRating"}
+        title={"Оцени свою готовность к турниру от 1 до 10, где 1 - абсолютно не готов, а 10 - готов на 100%"}
+        descriptorLimitBottom={"Абсолютно не готов"}
+        descriptorLimitTop={"Готов на 100%"}
       />
     ),
     happinessBeforeTournamentLevelRating: (
-      <HappinessBeforeTournamentLevelRatingQuestion
+      <LevelRatingQuestion
         masterValue={masterValue}
         changeMasterValue={changeMasterValue}
         setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"happinessBeforeTournamentLevelRating"}
+        title={"Оцени уровень радости перед турниром от 1 до 10, где 1 - очень грустно, а 10 - очень много радости"}
+        descriptorLimitBottom={"Очень грустно"}
+        descriptorLimitTop={"Очень много радости"}
       />
     ),
     anxietyBeforeTournamentLevelRating: (
-      <AnxietyBeforeTournamentLevelRatingQuestion
+      <LevelRatingQuestion
         masterValue={masterValue}
         changeMasterValue={changeMasterValue}
         setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"anxietyBeforeTournamentLevelRating"}
+        title={"Оцени уровень волнения перед турниром от 1 до 10, где 1 - тотальное спокойствие, а 10 - максимальная тревога"}
+        descriptorLimitBottom={"Тотальное спокойствие"}
+        descriptorLimitTop={"Максимальная тревога"}
       />
     ),
     tasksForTournament: (
@@ -322,57 +509,545 @@ function App() {
         masterValue={masterValue}
         changeMasterValue={changeMasterValue}
         setNextButtonDisabled={setNextButtonDisabled}
+        title="Супер! Какие задачи на турнир ты перед собой поставил?"
+        masterValueKey="tasksForTournament"
       />
     ),
-    // letsTalkAboutWarmup: (
-    //   <LetsTalkAboutWarmupQuestion
-    //     setNextButtonDisabled={setNextButtonDisabled}
-    //   />
-    // ),
-    // warmupWays: (
-    //   <WarmupWaysQuestion
-    //     masterValue={masterValue}
-    //     changeMasterValue={changeMasterValue}
-    //     warmupWays={warmupWays}
-    //     setNextButtonDisabled={setNextButtonDisabled}
-    //   />
-    // ),
-    // emotionsDuringWarmup: (
-    //   <EmotionsDuringWarmupQuestion
-    //     masterValue={masterValue}
-    //     changeMasterValue={changeMasterValue}
-    //     warmupWays={warmupWays}
-    //     setNextButtonDisabled={setNextButtonDisabled}
-    //   />
-    // ),
-    // emotionsDuringWarmup_joy: (
-    //   <EmotionsOptionQuestion
-    //     masterValue={masterValue}
-    //     changeMasterValueObject={changeMasterValueObject}
-    //     setNextButtonDisabled={setNextButtonDisabled}
-    //     masterValueKey={"emotionsDuringWarmupDetails"}
-    //     emotion={"joy"}
-    //     emotionsOptions={warmupJoyEmotions}
-    //   />
-    // ),
-    // emotionsDuringWarmup_fear: (
-    //   <EmotionsOptionQuestion
-    //     masterValue={masterValue}
-    //     changeMasterValueObject={changeMasterValueObject}
-    //     setNextButtonDisabled={setNextButtonDisabled}
-    //     masterValueKey={"emotionsDuringWarmupDetails"}
-    //     emotion={"fear"}
-    //     emotionsOptions={warmupFearEmotions}
-    //   />
-    // ),
-    // warmupSummary: (
-    //   <WarmupSummaryQuestion
-    //     masterValue={masterValue}
-    //     changeMasterValue={changeMasterValue}
-    //     warmupSummaries={warmupSummaries}
-    //     setNextButtonDisabled={setNextButtonDisabled}
-    //   />
-    // ),
+    mostInterestingMatch: (
+      <Intermediator
+        title="Супер, теперь давай разберем твой самый запоминающийся матч на этом турнире"
+        setNextButtonDisabled={setNextButtonDisabled}
+      />
+    ),
+    mostInterestingMatchOpponents: (
+      <OpponentsQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+      />
+    ),
+    mostInterestingMatchVictory: (
+      <DidYouWinQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+      />
+    ),
+    mostInterestingMatchResult: (
+      <ResultQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+      />
+    ),
+    mostInterestingMatchBeforeEmotions: (
+      <EmotionsBeforeQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey="mostInterestingMatchBeforeEmotions"
+        title="Отлично, а что ты чувствовал перед матчем?"
+      />
+    ),
+    mostInterestingMatchBeforeEmotion_joy: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"mostInterestingMatchBeforeEmotionsDetails"}
+        emotion={"joy"}
+        emotionsOptions={mostInterestingMatchBeforeEmotions.joy}
+      />
+    ),
+    mostInterestingMatchBeforeEmotion_fear: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"mostInterestingMatchBeforeEmotionsDetails"}
+        emotion={"fear"}
+        emotionsOptions={mostInterestingMatchBeforeEmotions.fear}
+      />
+    ),
+    mostInterestingMatchBeforeEmotion_despair: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"mostInterestingMatchBeforeEmotionsDetails"}
+        emotion={"despair"}
+        emotionsOptions={mostInterestingMatchBeforeEmotions.despair}
+      />
+    ),
+    mostInterestingMatchBeforeEmotion_shame: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"mostInterestingMatchBeforeEmotionsDetails"}
+        emotion={"shame"}
+        emotionsOptions={mostInterestingMatchBeforeEmotions.shame}
+      />
+    ),
+    mostInterestingMatchBeforeEmotion_anger: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"mostInterestingMatchBeforeEmotionsDetails"}
+        emotion={"anger"}
+        emotionsOptions={mostInterestingMatchBeforeEmotions.anger}
+      />
+    ),
+    mostInterestingMatchBeforeEmotion_loathing: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"mostInterestingMatchBeforeEmotionsDetails"}
+        emotion={"loathing"}
+        emotionsOptions={mostInterestingMatchBeforeEmotions.loathing}
+      />
+    ),
+    mostInterestingMatchBeforeEmotion_indifference: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"mostInterestingMatchBeforeEmotionsDetails"}
+        emotion={"indifference"}
+        emotionsOptions={mostInterestingMatchBeforeEmotions.indifference}
+      />
+    ),
+    innerLevelOfReadinessBeforeMatch: (
+      <Intermediator
+        title="Отлично, ты справился! Давай теперь отследим твой внутренний уровень готовности к матчу, уровень радости и уровень волнения"
+        setNextButtonDisabled={setNextButtonDisabled}
+      />
+    ),
+    readinessLevelBeforeMatchRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"readinessLevelBeforeMatchRating"}
+        title={"Оцени свой уровень готовности к матчу по шкале от 1 до 10, где 1 - абсолютно не готов, а 10 - готов на 100%"}
+        descriptorLimitBottom={"Абсолютно не готов"}
+        descriptorLimitTop={"Готов на 100%"}
+      />
+    ),
+    readinessLevelBeforeMatchRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"readinessLevelBeforeMatchRating"}
+        title={"Оцени свой уровень готовности к матчу по шкале от 1 до 10, где 1 - абсолютно не готов, а 10 - готов на 100%"}
+        descriptorLimitBottom={"Абсолютно не готов"}
+        descriptorLimitTop={"Готов на 100%"}
+      />
+    ),
+    happinessBeforeMatchLevelRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"happinessBeforeMatchLevelRating"}
+        title={"Оцени уровень радости перед матчем от 1 до 10, где 1 - очень грустно, а 10 - очень много радости"}
+        descriptorLimitBottom={"Очень грустно"}
+        descriptorLimitTop={"Очень много радости"}
+      />
+    ),
+    anxietyBeforeMatchLevelRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"anxietyBeforeMatchLevelRating"}
+        title={"Оцени уровень волнения перед матчем от 1 до 10, где 1 - тотальное спокойствие, а 10 - максимальная тревога"}
+        descriptorLimitBottom={"Тотальное спокойствие"}
+        descriptorLimitTop={"Максимальная тревога"}
+      />
+    ),
+    tasksForThisMatch: (
+      <TasksForTournamentQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        title="Супер! Какие задачи на этот матч ты перед собой поставил?"
+        masterValueKey="tasksForThisMatch"
+      />
+    ),
+    letsTalkAboutThisMatch: (
+      <Intermediator
+        title="Теперь давай поговорим о самом матче"
+        setNextButtonDisabled={setNextButtonDisabled}
+      />
+    ),
+    breakingPoint: (
+      <BreakingPointQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+      />
+    ),
+    emotionsDuringMatch: (
+      <EmotionsBeforeQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey="emotionsDuringMatch"
+        title="Отлично, а что ты чувствовал во время матча?"
+      />
+    ),
+    emotionDuringMatch_joy: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsDuringMatchDetails"}
+        emotion={"joy"}
+        emotionsOptions={breakingPointEmotions.joy}
+      />
+    ),
+    emotionDuringMatch_fear: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsDuringMatchDetails"}
+        emotion={"fear"}
+        emotionsOptions={breakingPointEmotions.fear}
+      />
+    ),
+    emotionDuringMatch_despair: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsDuringMatchDetails"}
+        emotion={"despair"}
+        emotionsOptions={breakingPointEmotions.despair}
+      />
+    ),
+    emotionDuringMatch_shame: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsDuringMatchDetails"}
+        emotion={"shame"}
+        emotionsOptions={breakingPointEmotions.shame}
+      />
+    ),
+    emotionDuringMatch_anger: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsDuringMatchDetails"}
+        emotion={"anger"}
+        emotionsOptions={breakingPointEmotions.anger}
+      />
+    ),
+    emotionDuringMatch_loathing: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsDuringMatchDetails"}
+        emotion={"loathing"}
+        emotionsOptions={breakingPointEmotions.loathing}
+      />
+    ),
+    emotionDuringMatch_indifference: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsDuringMatchDetails"}
+        emotion={"indifference"}
+        emotionsOptions={breakingPointEmotions.indifference}
+      />
+    ),
+    satisfactionDuringMatchRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"satisfactionDuringMatchRating"}
+        title={"Оцени свою удовлетворенность от своих действий во время матча по шкале от 1 до 10, где 1 - абсолютно не доволен, а 10 - очень доволен"}
+        descriptorLimitBottom={"Абсолютно не доволен"}
+        descriptorLimitTop={"Очень доволен"}
+      />
+    ),
+    happinessDuringMatchRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"happinessDuringMatchRating"}
+        title={"Оцени уровень радости во время матча от 1 до 10, где 1 - очень грустно, а 10 - очень много радости"}
+        descriptorLimitBottom={"Очень грустно"}
+        descriptorLimitTop={"Очень много радости"}
+      />
+    ),
+    anxietyDuringMatchRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"anxietyDuringMatchRating"}
+        title={"Оцени уровень волнения во время матча от 1 до 10, где 1 - тотальное спокойствие, а 10 - максимальная тревога"}
+        descriptorLimitBottom={"Тотальное спокойствие"}
+        descriptorLimitTop={"Максимальная тревога"}
+      />
+    ),
+    emotionsBeforeBreakingPoint: (
+      <EmotionsBeforeQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey="emotionsBeforeBreakingPoint"
+        title="Отлично, а что ты чувствовал до переломного момента?"
+      />
+    ),
+    emotionBeforeBreakingPoint_joy: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsBeforeBreakingPointDetails"}
+        emotion={"joy"}
+        emotionsOptions={breakingPointEmotions.joy}
+      />
+    ),
+    emotionBeforeBreakingPoint_fear: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsBeforeBreakingPointDetails"}
+        emotion={"fear"}
+        emotionsOptions={breakingPointEmotions.fear}
+      />
+    ),
+    emotionBeforeBreakingPoint_despair: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsBeforeBreakingPointDetails"}
+        emotion={"despair"}
+        emotionsOptions={breakingPointEmotions.despair}
+      />
+    ),
+    emotionBeforeBreakingPoint_shame: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsBeforeBreakingPointDetails"}
+        emotion={"shame"}
+        emotionsOptions={breakingPointEmotions.shame}
+      />
+    ),
+    emotionBeforeBreakingPoint_anger: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsBeforeBreakingPointDetails"}
+        emotion={"anger"}
+        emotionsOptions={breakingPointEmotions.anger}
+      />
+    ),
+    emotionBeforeBreakingPoint_loathing: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsBeforeBreakingPointDetails"}
+        emotion={"loathing"}
+        emotionsOptions={breakingPointEmotions.loathing}
+      />
+    ),
+    emotionBeforeBreakingPoint_indifference: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsBeforeBreakingPointDetails"}
+        emotion={"indifference"}
+        emotionsOptions={breakingPointEmotions.indifference}
+      />
+    ),
+    breakingPointDirection: (
+      <BreakingPointDirectionQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+      />
+    ),
+    breakingPointCauses: (
+      <BreakingPointCausesQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+      />
+    ),
+    satisfactionBeforeBreakingPointRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"satisfactionBeforeBreakingPointRating"}
+        title={"Оцени свою удовлетворенность от своих действий во время матча по шкале от 1 до 10, где 1 - абсолютно не доволен, а 10 - очень доволен"}
+        descriptorLimitBottom={"Абсолютно не доволен"}
+        descriptorLimitTop={"Очень доволен"}
+      />
+    ),
+    happinessBeforeBreakingPointRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"happinessBeforeBreakingPointRating"}
+        title={"Оцени уровень радости во время матча от 1 до 10, где 1 - очень грустно, а 10 - очень много радости"}
+        descriptorLimitBottom={"Очень грустно"}
+        descriptorLimitTop={"Очень много радости"}
+      />
+    ),
+    anxietyBeforeBreakingPointRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"anxietyBeforeBreakingPointRating"}
+        title={"Оцени уровень волнения во время матча от 1 до 10, где 1 - тотальное спокойствие, а 10 - максимальная тревога"}
+        descriptorLimitBottom={"Тотальное спокойствие"}
+        descriptorLimitTop={"Максимальная тревога"}
+      />
+    ),
+    emotionsAfterBreakingPoint: (
+      <EmotionsBeforeQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey="emotionsAfterBreakingPoint"
+        title="Отлично, а что ты чувствовал после переломного момента?"
+      />
+    ),
+    emotionAfterBreakingPoint_joy: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsAfterBreakingPointDetails"}
+        emotion={"joy"}
+        emotionsOptions={breakingPointEmotions.joy}
+      />
+    ),
+    emotionAfterBreakingPoint_fear: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsAfterBreakingPointDetails"}
+        emotion={"fear"}
+        emotionsOptions={breakingPointEmotions.fear}
+      />
+    ),
+    emotionAfterBreakingPoint_despair: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsAfterBreakingPointDetails"}
+        emotion={"despair"}
+        emotionsOptions={breakingPointEmotions.despair}
+      />
+    ),
+    emotionAfterBreakingPoint_shame: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsAfterBreakingPointDetails"}
+        emotion={"shame"}
+        emotionsOptions={breakingPointEmotions.shame}
+      />
+    ),
+    emotionAfterBreakingPoint_anger: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsAfterBreakingPointDetails"}
+        emotion={"anger"}
+        emotionsOptions={breakingPointEmotions.anger}
+      />
+    ),
+    emotionAfterBreakingPoint_loathing: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsAfterBreakingPointDetails"}
+        emotion={"loathing"}
+        emotionsOptions={breakingPointEmotions.loathing}
+      />
+    ),
+    emotionAfterBreakingPoint_indifference: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsAfterBreakingPointDetails"}
+        emotion={"indifference"}
+        emotionsOptions={breakingPointEmotions.indifference}
+      />
+    ),
+    satisfactionAfterBreakingPointRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"satisfactionAfterBreakingPointRating"}
+        title={"Оцени свою удовлетворенность от своих действий во время матча по шкале от 1 до 10, где 1 - абсолютно не доволен, а 10 - очень доволен"}
+        descriptorLimitBottom={"Абсолютно не доволен"}
+        descriptorLimitTop={"Очень доволен"}
+      />
+    ),
+    happinessAfterBreakingPointRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"happinessAfterBreakingPointRating"}
+        title={"Оцени уровень радости во время матча от 1 до 10, где 1 - очень грустно, а 10 - очень много радости"}
+        descriptorLimitBottom={"Очень грустно"}
+        descriptorLimitTop={"Очень много радости"}
+      />
+    ),
+    anxietyAfterBreakingPointRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"anxietyAfterBreakingPointRating"}
+        title={"Оцени уровень волнения во время матча от 1 до 10, где 1 - тотальное спокойствие, а 10 - максимальная тревога"}
+        descriptorLimitBottom={"Тотальное спокойствие"}
+        descriptorLimitTop={"Максимальная тревога"}
+      />
+    ),
+    senseOfDutyDuringMatch: (
+      <SenseOfDutyDuringMatchQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+      />
+    ),
   };
 
   useEffect(() => {

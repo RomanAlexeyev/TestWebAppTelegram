@@ -4,20 +4,22 @@ export const TasksForTournamentQuestion = ({
   masterValue,
   changeMasterValue,
   setNextButtonDisabled,
+  title,
+  masterValueKey
 }) => {
   useEffect(() => {
-    setNextButtonDisabled(!masterValue.tasksForTournament.length);
-  }, [masterValue.tasksForTournament]);
+    setNextButtonDisabled(!masterValue[masterValueKey].length);
+  }, [masterValue[masterValueKey]]);
   return (
     <>
-      <div className="question-title">Супер! Какие задачи на турнир ты перед собой поставил?</div>
+      <div className="question-title">{title}</div>
       <div className="question-body">
         <textarea
           rows="10"
           className="question-input-text"
-          value={masterValue.tasksForTournament}
+          value={masterValue[masterValueKey]}
           onChange={(e) =>
-            changeMasterValue("tasksForTournament", e.target.value)
+            changeMasterValue(masterValueKey, e.target.value)
           }
         />
       </div>

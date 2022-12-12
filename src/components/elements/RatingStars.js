@@ -10,6 +10,10 @@ export const RatingStars = ({ changeMasterValue, masterValue, masterValueKey }) 
     changeMasterValue(masterValueKey, selected);
   }, [selected]);
 
+  useEffect(() => {
+    setSelected(masterValue[masterValueKey]);
+  }, [masterValueKey]);
+
   const renderRatingStars = () => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {

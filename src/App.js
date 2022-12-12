@@ -9,83 +9,31 @@ import { UilArrowLeft } from "@iconscout/react-unicons";
 import { UilArrowRight } from "@iconscout/react-unicons";
 
 import { Intermediator } from "./components/stepsPages/Intermediator";
+import { SingleLineTextInput } from "./components/stepsPages/SingleLineTextInput";
+import { MultiLineTextInput } from "./components/stepsPages/MultiLineTextInput";
 import { LevelRatingQuestion } from "./components/stepsPages/LevelRatingQuestion";
-import { NameQuestion } from "./components/stepsPages/NameQuestion";
 import { DateQuestion } from "./components/stepsPages/DateQuestion";
 import { EmotionsBeforeQuestion } from "./components/stepsPages/EmotionsBeforeQuestion";
 import { EmotionsOptionQuestion } from "./components/stepsPages/EmotionsOptionQuestion";
 import { SenseOfDutyQuestion } from "./components/stepsPages/SenseOfDutyQuestion";
 import { SenseOfDutyOptionsQuestion } from "./components/stepsPages/SenseOfDutyOptionsQuestion";
 import { InnerLevelOfReadinessQuestion } from "./components/stepsPages/InnerLevelOfReadinessQuestion";
-import { ReadinessLevelRatingQuestion } from "./components/stepsPages/ReadinessLevelRatingQuestion";
-import { HappinessBeforeTournamentLevelRatingQuestion } from "./components/stepsPages/HappinessBeforeTournamentLevelRatingQuestion";
-import { AnxietyBeforeTournamentLevelRatingQuestion } from "./components/stepsPages/AnxietyBeforeTournamentLevelRatingQuestion";
 import { TasksForTournamentQuestion } from "./components/stepsPages/TasksForTournamentQuestion";
-import { OpponentsQuestion } from "./components/stepsPages/OpponentsQuestion";
 import { DidYouWinQuestion } from "./components/stepsPages/DidYouWinQuestion";
-import { ResultQuestion } from "./components/stepsPages/ResultQuestion";
 import { BreakingPointQuestion } from "./components/stepsPages/BreakingPointQuestion";
 import { BreakingPointDirectionQuestion } from "./components/stepsPages/BreakingPointDirectionQuestion";
 import { BreakingPointCausesQuestion } from "./components/stepsPages/BreakingPointCausesQuestion";
 import { SenseOfDutyDuringMatchQuestion } from "./components/stepsPages/SenseOfDutyDuringMatchQuestion";
-
-
-
-// import { LetsTalkAboutWarmupQuestion } from "./components/stepsPages/LetsTalkAboutWarmupQuestion";
-// import { WarmupWaysQuestion } from "./components/stepsPages/WarmupWaysQuestion";
-// import { EmotionsDuringWarmupQuestion } from "./components/stepsPages/EmotionsDuringWarmupQuestion";
-// import { WarmupSummaryQuestion } from "./components/stepsPages/WarmupSummaryQuestion";
+import { SenseOfDutyDuringMatchOptionsQuestion } from "./components/stepsPages/SenseOfDutyDuringMatchOptionsQuestion";
+import { Finisher } from "./components/stepsPages/Finisher";
 
 import {
   beforeTournamentEmotions,
   mostInterestingMatchBeforeEmotions,
   breakingPointEmotions,
-  warmupJoyEmotions,
-  warmupFearEmotions
+  afterMatchEmotions,
+  tournamentResultsEmotions,
 } from "./components/elements/emotionsDescriptions";
-
-import { initialSteps } from "./store/slices/stepSlice";
-
-const warmupWays = [
-  {
-    code: "noWarmup",
-    description: "Не разминаюсь",
-    questionCloser: "все разминались, а ты нет"
-  },
-  {
-    code: "playingWithSomebody",
-    description: "Играю с кем-нибудь",
-    questionCloser: "играл с кем-то на разминке"
-  },
-  {
-    code: "justHittingBalls",
-    description: "Просто бью по шарам",
-    questionCloser: "просто бил по шарам на разминке"
-  },
-  {
-    code: "workingOnTechnique",
-    description: "Отрабатываю технику",
-    questionCloser: "отрабатывал технику на разминке"
-  },
-];
-const warmupSummaries = [
-  {
-    code: "yes",
-    description: "Да",
-  },
-  {
-    code: "no",
-    description: "Нет",
-  },
-  {
-    code: "fiftyFifty",
-    description: "50/50",
-  },
-  {
-    code: "noWarmup",
-    description: "Не разминался",
-  },
-];
 
 const tg = window.Telegram.WebApp;
 
@@ -174,6 +122,37 @@ function App() {
     happinessAfterBreakingPointRating: 0,
     anxietyAfterBreakingPointRating: 0,
     senseOfDutyDuringMatch: null,
+    senseOfDutyDuringMatchOptions: [],
+    emotionsAfterMatch: [],
+    emotionsAfterMatchDetails: {
+      joy: [],
+      fear: [],
+      despair: [],
+      shame: [],
+      anger: [],
+      loathing: [],
+      indifference: [],
+    },
+    readinessLevelAfterMatchRating: 0,
+    happinessLevelAfterMatchRating: 0,
+    anxietyLevelAfterMatchRating: 0,
+    tournamentResultsPlace: "",
+    tournamentResultsEmotions: [],
+    tournamentResultsEmotionsDetails: {
+      joy: [],
+      fear: [],
+      despair: [],
+      shame: [],
+      anger: [],
+      loathing: [],
+      indifference: [],
+    },
+    readinessLevelAfterTournamentRating: 0,
+    happinessLevelAfterTournamentRating: 0,
+    anxietyLevelAfterTournamentRating: 0,
+    tournamentWins: "",
+    tournamentFails: "",
+    tournamentTodos: "",
   });
 
   const changeMasterValue = (key, value) => {
@@ -199,7 +178,13 @@ function App() {
         senseOfDutyOptions: [],
       }));
     }
-  }, [masterValue.senseOfDuty])
+    if (!masterValue.senseOfDutyDuringMatch) {
+      setMasterValue((prev) => ({
+        ...prev,
+        senseOfDutyDuringMatchOptions: [],
+      }));
+    }
+  }, [masterValue.senseOfDuty, masterValue.senseOfDutyDuringMatch])
 
   useEffect(() => {
     const emotionBeforeTournamentArr = [];
@@ -207,6 +192,8 @@ function App() {
     const emotionsDuringMatchArr = [];
     const emotionsBeforeBreakingPointArr = [];
     const emotionsAfterBreakingPointArr = [];
+    const emotionsAfterMatchArr = [];
+    const tournamentResultsEmotionsArr = [];
     let senseOfDutyOptions = false;
 
     const chunk_5_initialNoBreakingPoint = ["emotionsDuringMatch",
@@ -260,6 +247,27 @@ function App() {
       chunk_6: [
         "senseOfDutyDuringMatch",
       ],
+      chunk_7: [
+        "letsTalkAboutEmotionsAfterMatch",
+        "emotionsAfterMatch",
+      ],
+      chunk_8: [
+        "readinessLevelAfterMatchRating",
+        "happinessLevelAfterMatchRating",
+        "anxietyLevelAfterMatchRating",
+        "letsTalkAboutTournamentResults",
+        "tournamentResultsPlace",
+        "tournamentResultsEmotions",
+      ],
+      chunk_9: [
+        "readinessLevelAfterTournamentRating",
+        "happinessLevelAfterTournamentRating",
+        "anxietyLevelAfterTournamentRating",
+        "tournamentWins",
+        "tournamentFails",
+        "tournamentTodos",
+        "finisher",
+      ],
     }
 
     if (!!masterValue.emotionsBeforeTournament.length) {
@@ -301,7 +309,7 @@ function App() {
       // }))
     }
 
-    if (!!masterValue.emotionsDuringMatch.length) {
+    if (!masterValue.breakingPoint && !!masterValue.emotionsDuringMatch.length) {
       masterValue.emotionsDuringMatch.map((code) => {
         emotionsDuringMatchArr.push("emotionDuringMatch_" + code);
       });
@@ -309,14 +317,14 @@ function App() {
       steps.chunk_5 = chunk_5_initialNoBreakingPoint;
     }
 
-    if (!!masterValue.emotionsBeforeBreakingPoint.length) {
+    if (!!masterValue.breakingPoint && !!masterValue.emotionsBeforeBreakingPoint.length) {
       masterValue.emotionsBeforeBreakingPoint.map((code) => {
         emotionsBeforeBreakingPointArr.push("emotionBeforeBreakingPoint_" + code);
       });
       chunk_5_initialBreakingPoint.splice(1, 0, ...emotionsBeforeBreakingPointArr);
       steps.chunk_5 = chunk_5_initialBreakingPoint;
     }
-    if (!!masterValue.emotionsAfterBreakingPoint.length) {
+    if (!!masterValue.breakingPoint && !!masterValue.emotionsAfterBreakingPoint.length) {
       masterValue.emotionsAfterBreakingPoint.map((code) => {
         emotionsAfterBreakingPointArr.push("emotionAfterBreakingPoint_" + code);
       });
@@ -328,6 +336,19 @@ function App() {
       steps.chunk_6.push("senseOfDutyDuringMatchOptions");
     }
 
+    if (!!masterValue.emotionsAfterMatch.length) {
+      masterValue.emotionsAfterMatch.map((code) => {
+        emotionsAfterMatchArr.push("emotionAfterMatch_" + code);
+      });
+      steps.chunk_7 = [...steps.chunk_7, ...emotionsAfterMatchArr];
+    }
+
+    if (!!masterValue.tournamentResultsEmotions.length) {
+      masterValue.tournamentResultsEmotions.map((code) => {
+        tournamentResultsEmotionsArr.push("tournamentResultsEmotion_" + code);
+      });
+    }
+
     const resultSteps = [
       ...steps.chunk_1,
       ...emotionBeforeTournamentArr,
@@ -336,19 +357,25 @@ function App() {
       ...mostInterestingMatchBeforeEmotionsArr,
       ...steps.chunk_4,
       ...steps.chunk_5,
-      ...steps.chunk_6
+      ...steps.chunk_6,
+      ...steps.chunk_7,
+      ...steps.chunk_8,
+      ...tournamentResultsEmotionsArr,
+      ...steps.chunk_9
     ];
     dispatch(setSteps(resultSteps));
 
   }, [
     masterValue.emotionsBeforeTournament,
     masterValue.senseOfDuty,
+    masterValue.senseOfDutyDuringMatch,
     masterValue.mostInterestingMatchBeforeEmotions,
     masterValue.breakingPoint,
     masterValue.emotionsDuringMatch,
     masterValue.emotionsBeforeBreakingPoint,
     masterValue.emotionsAfterBreakingPoint,
-    // masterValue.emotionsDuringWarmup
+    masterValue.emotionsAfterMatch,
+    masterValue.tournamentResultsEmotions,
   ]);
 
 
@@ -360,10 +387,11 @@ function App() {
       />
     ),
     tournamentName: (
-      <NameQuestion
-        masterValue={masterValue}
+      <SingleLineTextInput masterValue={masterValue}
         changeMasterValue={changeMasterValue}
         setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"tournamentName"}
+        title={"Начнем с того, что было до турнира. Как назывался турнир?"}
       />
     ),
     tournamentDate: (
@@ -520,10 +548,12 @@ function App() {
       />
     ),
     mostInterestingMatchOpponents: (
-      <OpponentsQuestion
+      <SingleLineTextInput
         masterValue={masterValue}
         changeMasterValue={changeMasterValue}
         setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"mostInterestingMatchOpponents"}
+        title={"С кем играл?"}
       />
     ),
     mostInterestingMatchVictory: (
@@ -534,10 +564,12 @@ function App() {
       />
     ),
     mostInterestingMatchResult: (
-      <ResultQuestion
+      <SingleLineTextInput
         masterValue={masterValue}
         changeMasterValue={changeMasterValue}
         setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"mostInterestingMatchResult"}
+        title={"Какой был итоговый счет?"}
       />
     ),
     mostInterestingMatchBeforeEmotions: (
@@ -670,12 +702,12 @@ function App() {
       />
     ),
     tasksForThisMatch: (
-      <TasksForTournamentQuestion
+      <MultiLineTextInput
         masterValue={masterValue}
         changeMasterValue={changeMasterValue}
         setNextButtonDisabled={setNextButtonDisabled}
-        title="Супер! Какие задачи на этот матч ты перед собой поставил?"
-        masterValueKey="tasksForThisMatch"
+        masterValueKey={"tasksForThisMatch"}
+        title={"Супер! Какие задачи на этот матч ты перед собой поставил?"}
       />
     ),
     letsTalkAboutThisMatch: (
@@ -1048,6 +1080,288 @@ function App() {
         setNextButtonDisabled={setNextButtonDisabled}
       />
     ),
+    senseOfDutyDuringMatchOptions: (
+      <SenseOfDutyDuringMatchOptionsQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+      />
+    ),
+    letsTalkAboutEmotionsAfterMatch: (
+      <Intermediator
+        title="Теперь давай поговорим о чувствах после матча?"
+        setNextButtonDisabled={setNextButtonDisabled}
+      />
+    ),
+    emotionsAfterMatch: (
+      <EmotionsBeforeQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey="emotionsAfterMatch"
+        title="Отлично, а что ты чувствовал после матча?"
+      />
+    ),
+    emotionAfterMatch_joy: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsAfterMatchDetails"}
+        emotion={"joy"}
+        emotionsOptions={afterMatchEmotions.joy}
+      />
+    ),
+    emotionAfterMatch_fear: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsAfterMatchDetails"}
+        emotion={"fear"}
+        emotionsOptions={afterMatchEmotions.fear}
+      />
+    ),
+    emotionAfterMatch_despair: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsAfterMatchDetails"}
+        emotion={"despair"}
+        emotionsOptions={afterMatchEmotions.despair}
+      />
+    ),
+    emotionAfterMatch_shame: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsAfterMatchDetails"}
+        emotion={"shame"}
+        emotionsOptions={afterMatchEmotions.shame}
+      />
+    ),
+    emotionAfterMatch_anger: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsAfterMatchDetails"}
+        emotion={"anger"}
+        emotionsOptions={afterMatchEmotions.anger}
+      />
+    ),
+    emotionAfterMatch_loathing: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsAfterMatchDetails"}
+        emotion={"loathing"}
+        emotionsOptions={afterMatchEmotions.loathing}
+      />
+    ),
+    emotionAfterMatch_indifference: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"emotionsAfterMatchDetails"}
+        emotion={"indifference"}
+        emotionsOptions={afterMatchEmotions.indifference}
+      />
+    ),
+    readinessLevelAfterMatchRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"readinessLevelAfterMatchRating"}
+        title={"Оцени свою удовлетворенность от своих действий после матча по шкале от 1 до 10, где 1 - абсолютно не доволен, а 10 - очень доволен"}
+        descriptorLimitBottom={"Абсолютно не доволен"}
+        descriptorLimitTop={"Очень доволен"}
+      />
+    ),
+    happinessLevelAfterMatchRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"happinessLevelAfterMatchRating"}
+        title={"Оцени уровень радости после матча  от 1 до 10, где 1 - очень грустно, а 10 - очень много радости"}
+        descriptorLimitBottom={"Очень грустно"}
+        descriptorLimitTop={"Очень много радости"}
+      />
+    ),
+    anxietyLevelAfterMatchRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"anxietyLevelAfterMatchRating"}
+        title={"Оцени уровень волнения после матча от 1 до 10, где 1 - тотальное спокойствие, а 10 - максимальная тревога"}
+        descriptorLimitBottom={"Тотальное спокойствие"}
+        descriptorLimitTop={"Максимальная тревога"}
+      />
+    ),
+    letsTalkAboutTournamentResults: (
+      <Intermediator
+        title="Супер! Теперь давай поговорим об итогах турнира?"
+        setNextButtonDisabled={setNextButtonDisabled}
+      />
+    ),
+    tournamentResultsPlace: (
+      <SingleLineTextInput
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"tournamentResultsPlace"}
+        title={"Какое место ты занял?"}
+      />
+    ),
+    tournamentResultsEmotions: (
+      <EmotionsBeforeQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey="tournamentResultsEmotions"
+        title="Отлично, а что ты чувствовал по итогу турнира?"
+      />
+    ),
+    tournamentResultsEmotion_joy: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"tournamentResultsEmotionsDetails"}
+        emotion={"joy"}
+        emotionsOptions={tournamentResultsEmotions.joy}
+      />
+    ),
+    tournamentResultsEmotion_fear: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"tournamentResultsEmotionsDetails"}
+        emotion={"fear"}
+        emotionsOptions={tournamentResultsEmotions.fear}
+      />
+    ),
+    tournamentResultsEmotion_despair: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"tournamentResultsEmotionsDetails"}
+        emotion={"despair"}
+        emotionsOptions={tournamentResultsEmotions.despair}
+      />
+    ),
+    tournamentResultsEmotion_shame: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"tournamentResultsEmotionsDetails"}
+        emotion={"shame"}
+        emotionsOptions={tournamentResultsEmotions.shame}
+      />
+    ),
+    tournamentResultsEmotion_anger: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"tournamentResultsEmotionsDetails"}
+        emotion={"anger"}
+        emotionsOptions={tournamentResultsEmotions.anger}
+      />
+    ),
+    tournamentResultsEmotion_loathing: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"tournamentResultsEmotionsDetails"}
+        emotion={"loathing"}
+        emotionsOptions={tournamentResultsEmotions.loathing}
+      />
+    ),
+    tournamentResultsEmotion_indifference: (
+      <EmotionsOptionQuestion
+        masterValue={masterValue}
+        changeMasterValueObject={changeMasterValueObject}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"tournamentResultsEmotionsDetails"}
+        emotion={"indifference"}
+        emotionsOptions={tournamentResultsEmotions.indifference}
+      />
+    ),
+    readinessLevelAfterTournamentRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"readinessLevelAfterTournamentRating"}
+        title={"Оцени свою удовлетворенность от своих действий по итогу турнира от 1 до 10, где 1 - абсолютно не готов, а 10 - готов на 100%"}
+        descriptorLimitBottom={"Абсолютно не готов"}
+        descriptorLimitTop={"Готов на 100%"}
+      />
+    ),
+    happinessLevelAfterTournamentRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"happinessLevelAfterTournamentRating"}
+        title={"Оцени уровень радости по итогу турнира от 1 до 10, где 1 - очень грустно, а 10 - очень много радости"}
+        descriptorLimitBottom={"Очень грустно"}
+        descriptorLimitTop={"Очень много радости"}
+      />
+    ),
+    anxietyLevelAfterTournamentRating: (
+      <LevelRatingQuestion
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"anxietyLevelAfterTournamentRating"}
+        title={"Оцени уровень волнения по итогу турнира от 1 до 10, где 1 - тотальное спокойствие, а 10 - максимальная тревога"}
+        descriptorLimitBottom={"Тотальное спокойствие"}
+        descriptorLimitTop={"Максимальная тревога"}
+      />
+    ),
+    tournamentWins: (
+      <MultiLineTextInput
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"tournamentWins"}
+        title={"Напиши пару предложений о турнире. Что получалось?"}
+      />
+    ),
+    tournamentFails: (
+      <MultiLineTextInput
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"tournamentFails"}
+        title={"Что не получалось?"}
+      />
+    ),
+    tournamentTodos: (
+      <MultiLineTextInput
+        masterValue={masterValue}
+        changeMasterValue={changeMasterValue}
+        setNextButtonDisabled={setNextButtonDisabled}
+        masterValueKey={"tournamentTodos"}
+        title={"Над чем тебе стоит поработать?"}
+      />
+    ),
+    finisher: (
+      <Finisher masterValue={masterValue} tg={tg} />
+    )
   };
 
   useEffect(() => {
@@ -1073,7 +1387,7 @@ function App() {
           </button>
           <button
             className="button-next"
-            disabled={nextButtonDisabled}
+            disabled={nextButtonDisabled || currentStep === "finisher"}
             onClick={() => dispatch(goToNext())}
           >
             <span>Далее</span>

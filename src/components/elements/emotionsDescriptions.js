@@ -282,6 +282,276 @@ export const beforeTournamentEmotions = {
   ]
 };
 
+export const tournamentResultsEmotions = {
+  joy: [
+    {
+      code: "iShowedMaximum",
+      description: "Я показал свой максимум",
+    },
+    {
+      code: "iAmHappyAboutMyPerformance",
+      description: "Я доволен своим выступлением",
+    },
+    {
+      code: "iAmProudOfMyself",
+      description: "Я горжусь собой",
+    },
+    {
+      code: "iGrewUpStronger",
+      description: "Я вырос и стал сильнее",
+    },
+    {
+      code: "iWantToPlayAndGrow",
+      description: "Хочу играть и расти еще больше",
+    },
+    {
+      code: "iFeelMyPower",
+      description: "Я чувствую свою силу",
+    },
+  ],
+  fear: [
+    {
+      code: "iAmScaredToLookInTheEyes",
+      description: "Я боюсь смотреть в глаза близким",
+    },
+    {
+      code: "iAmAfraidOfNotGrowing",
+      description: "Я беспокоюсь, что я никогда не вырасту",
+    },
+    {
+      code: "iAmTerrifiedOfMyPlaying",
+      description: "Я в ужасе от своей игры",
+    },
+    {
+      code: "iDoubtINeedToKeepGoing",
+      description: "Я сомневаюсь, что стоит продолжать тренироваться",
+    },
+  ],
+  despair: [
+    {
+      code: "iFeelLonely",
+      description: "Я чувствую одиночество",
+    },
+    {
+      code: "iAmSad",
+      description: "Я расстроен",
+    },
+  ],
+  shame: [
+    {
+      code: "iFeelShameForMyTrainer",
+      description: "Я чувствую вину перед тренером",
+    },
+    {
+      code: "ashamedOfMyPlaying",
+      description: "Мне стыдно за свою игру",
+    },
+    {
+      code: "ashamedOfGoingHome",
+      description: "Мне стыдно возвращаться домой",
+    },
+    {
+      code: "ashamedOfLookingPeopleInTheEyes",
+      description: "Мне стыдно смотреть в глаза людям",
+    },
+    {
+      code: "iWantToRunAndHide",
+      description: "Мне хочется убежать и спрятаться",
+    },
+  ],
+  anger: [
+    {
+      code: "iAmSickOfMyOwnPlaying",
+      description: "Меня тошнит от моей игры",
+    },
+    {
+      code: "iPunishMyself",
+      description: "Я ругаю и наказываю себя",
+    },
+    {
+      code: "iAmOffendedByEveryone",
+      description: "Я обижен на всех вокруг",
+    },
+    {
+      code: "iHateMyself",
+      description: "Я ненавижу себя",
+    },
+  ],
+  loathing: [
+    {
+      code: "iDeservedToWinMoreThanOthers",
+      description: "Я был достоин победы больше других",
+    },
+    {
+      code: "iShouldntHaveLost",
+      description: "Я не должен был проигрывать",
+    },
+    {
+      code: "iLostToWrongPeople",
+      description: "Я проиграл тем, кому не должен был",
+    },
+  ],
+  indifference: [
+    {
+      code: "iDontGiveADamnAboutTheTournament",
+      description: "Наплевать на этот турнир, вообще пофиг как он прошел",
+    },
+  ],
+};
+
+export const afterMatchEmotions = {
+  joy: [
+    {
+      code: "happyAboutVictory",
+      description: "Я радуюсь победе",
+    },
+    {
+      code: "performedWell",
+      description: "Я хорошо сыграл",
+    },
+    {
+      code: "iDidEverythingICould",
+      description: "Я сделал все, что я мог",
+    },
+    {
+      code: "happyAboutPlayLevelGrowth",
+      description: "Мне так приятно, что вырос мой уровень игры",
+    },
+    {
+      code: "iWasInPerfectShape",
+      description: "Мое состояние было идеальным",
+    },
+  ],
+  fear: [
+    {
+      code: "myPlayLevelWillRemainHorrible",
+      description: "Мой уровень игры так и останется ужасным",
+    },
+    {
+      code: "afraidOfNeverWinning",
+      description: "Мне страшно, что я никогда не смогу победить",
+    },
+    {
+      code: "doubtsAboutRepeatingSuccess",
+      description: "Я сомневаюсь что смогу сыграть также следующий матч",
+    },
+    {
+      code: "afraidOFAnalyzingThisMatch",
+      description: "Мне страшно анализировать свой матч",
+    },
+    {
+      code: "shockedByTheWayIPlayed",
+      description: "Я в ужасе от того, как я сыграл",
+    },
+  ],
+  despair: [
+    {
+      code: "iAmSad",
+      description: "Я расстроен",
+    },
+    {
+      code: "everyoneWillLeaveMe",
+      description: "От меня теперь все откажутся",
+    },
+    {
+      code: "iFeelLonely",
+      description: "Я чувствую одиночество",
+    },
+    {
+      code: "sadAboutMisproductiveness",
+      description: "Мне грустно от того, что весь мой труд безрезультатен",
+    },
+    {
+      code: "iFailedAgain",
+      description: "Я снова не справился",
+    },
+  ],
+  shame: [
+    {
+      code: "ashamedOfMyPlaying",
+      description: "Мне стыдно за свою игру",
+    },
+    {
+      code: "feelingSorryAboutMyFans",
+      description: "Я чувствую вину перед всеми, кто за меня болел",
+    },
+    {
+      code: "iAmGuiltyILost",
+      description: "Я виновен в том, что я проиграл",
+    },
+    {
+      code: "iAmDeeplyAshamedOfMyself",
+      description: "Я сгораю от чувства стыда за себя",
+    },
+    {
+      code: "iBroughtShameUponMyselfInFrontOfEveryone",
+      description: "Я опозорился на глазах у всех",
+    },
+  ],
+  anger: [
+    {
+      code: "iHateMyself",
+      description: "Я ненавижу себя",
+    },
+    {
+      code: "iPerformedHorrible",
+      description: "Я сыграл ужасно",
+    },
+    {
+      code: "iScoldMyselfForLosing",
+      description: "Я ругаю себя за проигрыш",
+    },
+    {
+      code: "afterThisMatchIwantToQuit",
+      description: "После такой игры хочется бросить бильярд",
+    },
+    {
+      code: "annoyedByMyOwnUselessness",
+      description: "Бесит моя никчемность",
+    },
+    {
+      code: "iAmHopeless",
+      description: "Я безнадежен",
+    },
+  ],
+  loathing: [
+    {
+      code: "myOpponentShoudntHaveWon",
+      description: "Мой соперник не должен был выигрывать",
+    },
+    {
+      code: "impossibleToLoseToThisOpponent",
+      description: "Как я мог проиграть этому сопернику",
+    },
+    {
+      code: "myOpponentDoesntDeserveWinning",
+      description: "Мой соперник не достоин этой победы",
+    },
+    {
+      code: "badLuckAllMatch",
+      description: "Мне весь матч не везло",
+    },
+    {
+      code: "annoyedByMyGear",
+      description: "Меня бесит оборудование, это оно виновато",
+    },
+    {
+      code: "feelingSickOfMyself",
+      description: "Мне противно от себя",
+    },
+  ],
+  indifference: [
+    {
+      code: "dontCareAboutHavingLost",
+      description: "Наплевать, проиграл и проиграл",
+    },
+    {
+      code: "dontCareAboutThisMatchResult",
+      description: "Мне наплевать на результат этого матча",
+    },
+  ],
+};
+
 
 
 export const senseOfDutyOptions = [
@@ -304,6 +574,29 @@ export const senseOfDutyOptions = [
   {
     code: "gottaBeFirst",
     description: "Я должен стать первым"
+  },
+];
+
+export const senseOfDutyDuringMatchOptions = [
+  {
+    code: "everyBallIsImportant",
+    description: "Каждый шар очень важен"
+  },
+  {
+    code: "everyMistakeIsAFail",
+    description: "Каждый промах - проигрыш партии"
+  },
+  {
+    code: "iHaveToPlayIdeally",
+    description: "Я должен играть идеально"
+  },
+  {
+    code: "iHaveToWinThisOpponent",
+    description: "Я обязан выиграть этого соперника"
+  },
+  {
+    code: "iHaveNoRightToLose",
+    description: "Я не имею права проиграть"
   },
 ];
 

@@ -17,8 +17,6 @@ import { EmotionsBeforeQuestion } from "./components/stepsPages/EmotionsBeforeQu
 import { EmotionsOptionQuestion } from "./components/stepsPages/EmotionsOptionQuestion";
 import { SenseOfDutyQuestion } from "./components/stepsPages/SenseOfDutyQuestion";
 import { SenseOfDutyOptionsQuestion } from "./components/stepsPages/SenseOfDutyOptionsQuestion";
-import { InnerLevelOfReadinessQuestion } from "./components/stepsPages/InnerLevelOfReadinessQuestion";
-import { TasksForTournamentQuestion } from "./components/stepsPages/TasksForTournamentQuestion";
 import { DidYouWinQuestion } from "./components/stepsPages/DidYouWinQuestion";
 import { BreakingPointQuestion } from "./components/stepsPages/BreakingPointQuestion";
 import { BreakingPointDirectionQuestion } from "./components/stepsPages/BreakingPointDirectionQuestion";
@@ -194,13 +192,15 @@ function App() {
     const emotionsAfterBreakingPointArr = [];
     const emotionsAfterMatchArr = [];
     const tournamentResultsEmotionsArr = [];
-    let senseOfDutyOptions = false;
 
-    const chunk_5_initialNoBreakingPoint = ["emotionsDuringMatch",
+    const chunk_5_initialNoBreakingPoint = [
+      "emotionsDuringMatch",
       "satisfactionDuringMatchRating",
       "happinessDuringMatchRating",
       "anxietyDuringMatchRating"];
-    const chunk_5_initialBreakingPoint = ["emotionsBeforeBreakingPoint",
+
+    const chunk_5_initialBreakingPoint = [
+      "emotionsBeforeBreakingPoint",
       "breakingPointDirection",
       "breakingPointCauses",
       "satisfactionBeforeBreakingPointRating",
@@ -288,25 +288,10 @@ function App() {
 
     if (masterValue.breakingPoint === true) {
       steps.chunk_5 = chunk_5_initialBreakingPoint;
-      // setMasterValue(prev => ({
-      //   ...prev, 
-      //   emotionsDuringMatch: []
-      // }))
     } else if (masterValue.breakingPoint === false) {
       steps.chunk_5 = chunk_5_initialNoBreakingPoint;
-      // setMasterValue(prev => ({
-      //   ...prev, 
-      //   emotionsBeforeBreakingPoint: [],
-      //   emotionsAfterBreakingPoint: [],
-      // }))
     } else {
       steps.chunk_5 = [];
-      // setMasterValue(prev => ({
-      //   ...prev, 
-      //   emotionsDuringMatch: [],
-      //   emotionsBeforeBreakingPoint: [],
-      //   emotionsAfterBreakingPoint: [],
-      // }))
     }
 
     if (!masterValue.breakingPoint && !!masterValue.emotionsDuringMatch.length) {
@@ -495,7 +480,8 @@ function App() {
       />
     ),
     innerLevelOfReadiness: (
-      <InnerLevelOfReadinessQuestion
+      <Intermediator
+        title="Отлично, ты справился! Давай теперь отследим твой внутренний уровень готовности к турниру, уровень радости и уровень волнения"
         setNextButtonDisabled={setNextButtonDisabled}
       />
     ),
@@ -533,7 +519,7 @@ function App() {
       />
     ),
     tasksForTournament: (
-      <TasksForTournamentQuestion
+      <MultiLineTextInput
         masterValue={masterValue}
         changeMasterValue={changeMasterValue}
         setNextButtonDisabled={setNextButtonDisabled}

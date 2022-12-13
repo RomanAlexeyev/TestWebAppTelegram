@@ -65,7 +65,9 @@ const AppStarter = ({ setIsStarted }) => {
     </div>
     <div className="hero-title">Привет, дорогой друг.<br />Ты сыграл турнир, давай поговорим о нём?</div>
     <div className="hero-subtitle">После заполнения вышлем тебе полноценную заполненную страницу твоего личного спортивного дневника</div>
-    <div className="start-button-container">    <button className="start-button" onClick={() => setIsStarted(true)}>Давай</button></div>
+    <div className="start-button-container">
+      <button className="start-button" onClick={() => setIsStarted(true)}>Давай</button>
+    </div>
   </div>
 }
 
@@ -675,17 +677,6 @@ const AppInner = () => {
       <Intermediator
         title="Отлично, ты справился! Давай теперь отследим твой внутренний уровень готовности к матчу, уровень радости и уровень волнения"
         setNextButtonDisabled={setNextButtonDisabled}
-      />
-    ),
-    readinessLevelBeforeMatchRating: (
-      <LevelRatingQuestion
-        masterValue={masterValue}
-        changeMasterValue={changeMasterValue}
-        setNextButtonDisabled={setNextButtonDisabled}
-        masterValueKey={"readinessLevelBeforeMatchRating"}
-        title={"Оцени свой уровень готовности к матчу по шкале от 1 до 10, где 1 - абсолютно не готов, а 10 - готов на 100%"}
-        descriptorLimitBottom={"Абсолютно не готов"}
-        descriptorLimitTop={"Готов на 100%"}
       />
     ),
     readinessLevelBeforeMatchRating: (

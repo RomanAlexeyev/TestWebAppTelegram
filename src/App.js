@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 
+import logo from "./assets/images/sportivity-logo.svg"
+import heroImage from "./assets/images/hero-image.svg"
+
 import { goToNext, goToPrevious, setSteps } from "./store/slices/stepSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -36,6 +39,37 @@ import {
 const tg = window.Telegram.WebApp;
 
 function App() {
+
+  const [isStarted, setIsStarted] = useState(false);
+
+  useEffect(() => {
+    tg.ready();
+  }, [])
+
+  return (
+    <div className="container">
+      {isStarted ? <AppInner /> : <AppStarter setIsStarted={setIsStarted} />}
+    </div>
+  );
+}
+
+export default App;
+
+const AppStarter = ({ setIsStarted }) => {
+  return <div className="starter-container">
+    <div className="logo-header">
+      <img src={logo} />
+    </div>
+    <div className="hero-image">
+      <img src={heroImage} />
+    </div>
+    <div className="hero-title">Привет, дорогой друг.<br/>Ты сыграл турнир, давай поговорим о нём?</div>
+    <div className="hero-subtitle">После заполнения вышлем тебе полноценную заполненную страницу твоего личного спортивного дневника</div>
+    <button className="start-button" onClick={() => setIsStarted(true)}>Давай</button>
+  </div>
+}
+
+const AppInner = () => {
 
   const dispatch = useDispatch();
   const currentStep = useSelector(state => state.steps.currentStep);
@@ -1350,19 +1384,15 @@ function App() {
     )
   };
 
-  useEffect(() => {
-    tg.ready();
-  }, [])
 
   return (
-    <div className="container">
+    <>
       <div className="header">
         <UilDiary className="icon" />
         <h3>Твой спортивный дневник</h3>
       </div>
       <div className="step-body">{stepsComponents[currentStep]}</div>
       <div className="footer">
-        {/* <div className="progress-bar"></div> */}
         <div className="buttons-bar">
           <button
             className="button-previous"
@@ -1381,8 +1411,6 @@ function App() {
           </button>
         </div>
       </div>
-    </div>
-  );
+    </>
+  )
 }
-
-export default App;

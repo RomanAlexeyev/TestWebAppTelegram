@@ -63,9 +63,9 @@ const AppStarter = ({ setIsStarted }) => {
     <div className="hero-image">
       <img src={heroImage} />
     </div>
-    <div className="hero-title">Привет, дорогой друг.<br/>Ты сыграл турнир, давай поговорим о нём?</div>
+    <div className="hero-title">Привет, дорогой друг.<br />Ты сыграл турнир, давай поговорим о нём?</div>
     <div className="hero-subtitle">После заполнения вышлем тебе полноценную заполненную страницу твоего личного спортивного дневника</div>
-    <button className="start-button" onClick={() => setIsStarted(true)}>Давай</button>
+    <div className="start-button-container">    <button className="start-button" onClick={() => setIsStarted(true)}>Давай</button></div>
   </div>
 }
 

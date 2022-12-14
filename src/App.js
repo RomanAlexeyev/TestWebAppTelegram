@@ -7,10 +7,6 @@ import heroImage from "./assets/images/hero-image.svg"
 import { goToNext, goToPrevious, setSteps } from "./store/slices/stepSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-import { UilDiary } from "@iconscout/react-unicons";
-import { UilArrowLeft } from "@iconscout/react-unicons";
-import { UilArrowRight } from "@iconscout/react-unicons";
-
 import { Intermediator } from "./components/stepsPages/Intermediator";
 import { SingleLineTextInput } from "./components/stepsPages/SingleLineTextInput";
 import { MultiLineTextInput } from "./components/stepsPages/MultiLineTextInput";

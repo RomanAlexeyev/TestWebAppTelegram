@@ -21,6 +21,7 @@ export const MultiLineTextInput = ({
           onChange={(e) =>
             changeMasterValue(masterValueKey, e.target.value)
           }
+          placeholder="Введите текст"
         />
       </div>
     </>

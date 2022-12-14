@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { UilCheck } from "@iconscout/react-unicons";
+import tickIcon from "../../assets/images/tick-icon.svg"
 import { HelperTag } from "../elements/HelperTag";
 
 const breakingPointCausesList = [
@@ -125,7 +125,7 @@ export const BreakingPointCausesQuestion = ({
                                 <div
                                     className={`custom-checkbox ${isChecked ? "checked" : ""}`}
                                 >
-                                    {isChecked && <UilCheck />}
+                                    {isChecked && <img src={tickIcon}/>}
                                 </div>
                             </div>
                             <div className="checkbox-text">{cause.description}</div>
@@ -139,7 +139,7 @@ export const BreakingPointCausesQuestion = ({
                         <div
                             className={`custom-checkbox ${isCustomChecked ? "checked" : ""}`}
                         >
-                            {isCustomChecked && <UilCheck />}
+                            {isCustomChecked && <img src={tickIcon}/>}
                         </div>
                     </div>
                     <input className="checkbox-custom-input" type="text" placeholder="Другое..." value={customCause?.description || ""} onChange={(e) => customInputHandler(e)} />

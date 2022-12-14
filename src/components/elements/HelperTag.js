@@ -1,10 +1,10 @@
-import { UilCheckCircle } from "@iconscout/react-unicons";
+import tickIcon from "../../assets/images/tick-icon.svg"
 
 export const HelperTag = () => {
   return (
     <div className="helper-tag">
-      <UilCheckCircle size={14} />
-      <span>выберите один или несколько</span>
+      <span className="tick-icon"><img src={tickIcon}/></span>
+      <span className="helper-tag-text">выберите один или несколько вариантов</span>
     </div>
   );
 };

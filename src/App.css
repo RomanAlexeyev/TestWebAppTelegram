@@ -13,11 +13,11 @@
 :root {
     --primary-color: #6F5091;
     --background-green-color: #F3FBE7;
-    /* --primary-hover-color: rgb(22, 95, 204); */
+    --background-gray-color: #F2F2F2;
     --secondary-color: #70AB3A;
-    /* --secondary-hover-color: rgb(213, 220, 228); */
     --text-color: #6F5091;
     --text-secondary-color: rgb(22, 22, 22);
+    --text-gray-color: #9F9F9F;
 }
 
 html,
@@ -62,12 +62,25 @@ h3 {
 }
 
 .rating-star {
+    padding: 0.5rem;
     cursor: pointer;
-    transition: opacity 0.3s ease;
+    position: relative;
 }
 
-.rating-star.disabled {
-    opacity: 0.2;
+.rating-star.disabled .star-mask {
+    opacity: 1;
+}
+
+.star-mask {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    z-index: 2;
+    top: 51%;
+    left: 50%;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
 }
 
 
@@ -86,6 +99,7 @@ h3 {
     max-width: 25rem;
     margin-top: 1rem;
 }
+
 /* .hero-image img {
     width: 100%;
     height: 100%;
@@ -138,6 +152,7 @@ h3 {
 
 .step-body {
     height: calc(100vh - 16rem);
+    width: 100%;
     padding: 1.5rem;
     padding-top: 0;
     /* padding: 1.5rem 25vw; */
@@ -146,7 +161,7 @@ h3 {
 
 .step-body .question-title {
     /* font-size: 2rem; */
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
 }
 
 .step-body .question-input-text {
@@ -212,9 +227,14 @@ button:disabled {
     color: white;
 }
 
-.button-next:not([disabled]):hover {
-    background-color: var(--primary-hover-color);
+button.button-auto-next {
+    margin: 2rem auto;
+    padding: 1rem;
 }
+
+/* .button-next:not([disabled]):hover {
+    background-color: var(--primary-hover-color);
+} */
 
 .button-next span {
     margin: 0 0.5rem;
@@ -229,15 +249,48 @@ button:disabled {
     display: flex;
     align-items: center;
     font-size: 0.75rem;
-    padding: 0.5rem 0.6rem;
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color);
-    border-radius: 2rem;
+    padding: 0.4rem 0.6rem;
+    background: linear-gradient(180deg, #9CDC43 0%, #70AB3A 100%);
+    color: white;
+    border-radius: 5px;
     width: max-content;
 }
 
-.helper-tag span {
+.helper-tag .tick-icon {
+    width: 10px;
+    margin-right: 1px;
+    margin-top: 3px;
+}
+
+.helper-tag-text {
     margin: 0 5px 0px;
+}
+
+.date-input {
+    display: flex;
+    align-items: center;
+    width: 15rem;
+    border-radius: 10px;
+    border: 1px solid var(--primary-color);
+    font-size: 1rem;
+    font-family: 'PT Sans', sans-serif;
+    height: 3rem;
+    cursor: pointer;
+}
+
+.date-icon {
+    height: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    background: linear-gradient(180deg, #9475CF 0%, #735497 100%);
+}
+
+.date-text {
+    margin: 0.5rem;
 }
 
 .checkbox-block {
@@ -251,12 +304,12 @@ button:disabled {
     transition: box-shadow 0.5s ease;
 }
 
-.checkbox-block:hover {
+/* .checkbox-block:hover {
     box-shadow: 0 5px 15px -5px rgba(48, 117, 221, 0.4);
-}
+} */
 
 .checkbox-block .checkbox-container {
-    width: 4rem;
+    width: 3rem;
     display: flex;
     justify-content: center;
 }
@@ -265,32 +318,32 @@ button:disabled {
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 5px;
-    background-color: var(--secondary-color);
+    background-color: var(--background-gray-color);
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 1rem;
+    margin: 0.5rem;
     transition: background-color 0.3s ease;
 }
 
 .checkbox-custom-input {
     font-size: 1rem;
     font-family: 'PT Sans', sans-serif;
-    padding: 1rem;
+    padding: 0.6rem;
     border-radius: 0 10px 10px 0;
     border: none;
-    background-color: var(--secondary-color);
-    width: 100%;
-    height: 3.5rem;
+    background-color: var(--background-gray-color);
+    width: calc(100% - 3rem);
+    /* height: 3.5rem; */
 }
 
 .custom-radio-button {
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 50%;
-    background-color: var(--secondary-color);
-    margin: 1rem;
+    background-color: var(--background-gray-color);
+    margin: 0.5rem;
 }
 
 .custom-radio-button .custom-radio-button-inner {
@@ -315,15 +368,17 @@ button:disabled {
 
 .custom-checkbox.checked {
     background-color: var(--primary-color);
+    padding: 0.3rem;
 }
 
 .checkbox-text {
-    padding: 1rem;
+    padding: 0.5rem;
     padding-left: 0;
+    width: calc(100% - 3rem);
 }
 
 .checkbox-text .title {
-    font-size: 1.25rem;
+    font-size: 1rem;
 }
 
 .checkbox-text .description {
@@ -349,6 +404,7 @@ button:disabled {
 }
 
 .descriptor-container span {
+    color: var(--text-gray-color);
     font-size: 0.75rem;
 }
 

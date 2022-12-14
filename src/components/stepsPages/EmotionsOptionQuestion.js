@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { UilCheck } from "@iconscout/react-unicons";
+import tickIcon from "../../assets/images/tick-icon.svg"
 import { HelperTag } from "../elements/HelperTag";
 
 const emotions = {
@@ -87,7 +87,7 @@ export const EmotionsOptionQuestion = ({
                 <div
                   className={`custom-checkbox ${isChecked ? "checked" : ""}`}
                 >
-                  {isChecked && <UilCheck />}
+                  {isChecked && <img src={tickIcon}/>}
                 </div>
               </div>
               <div className="checkbox-text">{option.description}</div>
@@ -101,7 +101,7 @@ export const EmotionsOptionQuestion = ({
             <div
               className={`custom-checkbox ${isCustomChecked ? "checked" : ""}`}
             >
-              {isCustomChecked && <UilCheck />}
+              {isCustomChecked && <img src={tickIcon}/>}
             </div>
           </div>
           <input className="checkbox-custom-input" type="text" placeholder="Другое..." value={customEmotion?.description || ""} onChange={(e) => customInputHandler(e)} />

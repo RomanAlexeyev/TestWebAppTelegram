@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 
-import { UilCheck } from "@iconscout/react-unicons";
 import { HelperTag } from "../elements/HelperTag";
 
+import tickIcon from "../../assets/images/tick-icon.svg"
 import { emotions } from "../elements/emotionsDescriptions";
 
 export const EmotionsBeforeQuestion = ({
@@ -50,7 +50,7 @@ export const EmotionsBeforeQuestion = ({
                 <div
                   className={`custom-checkbox ${isChecked ? "checked" : ""}`}
                 >
-                  {isChecked && <UilCheck />}
+                  {isChecked && <img src={tickIcon}/>}
                 </div>
               </div>
               <div className="checkbox-text">

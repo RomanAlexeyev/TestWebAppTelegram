@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-import { UisStar } from "@iconscout/react-unicons-solid";
+import coloredStar from "../../assets/images/star-colored.svg";
+import whiteStar from "../../assets/images/star-white.svg";
 
 export const RatingStars = ({ changeMasterValue, masterValue, masterValueKey }) => {
   const [hovered, setHovered] = useState(0);
@@ -18,16 +19,16 @@ export const RatingStars = ({ changeMasterValue, masterValue, masterValueKey }) 
     const stars = [];
     for (let i = 1; i <= 5; i++) {
       stars.push(
-        <UisStar
-          className={`icon rating-star ${
-            i <= selected || i <= hovered ? "" : "disabled"
-          }`}
-          size={60}
+        <span
           key={"ratingStar_" + i}
+          className={`icon rating-star ${i <= selected || i <= hovered ? "" : "disabled"}`}
+          onClick={() => setSelected(i)}
           onMouseEnter={() => setHovered(i)}
           onMouseLeave={() => setHovered(0)}
-          onClick={() => setSelected(i)}
-        />
+        >
+          <img src={coloredStar} />
+          <img className="star-mask" src={whiteStar} />
+        </span>
       );
     }
     return stars;

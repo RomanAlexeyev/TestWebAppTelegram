@@ -250,7 +250,6 @@ const AppInner = () => {
 
     const steps = {
       chunk_1: [
-        "letsTalk",
         "tournamentName",
         "tournamentDate",
         "emotionsBeforeTournament"
@@ -401,12 +400,6 @@ const AppInner = () => {
 
 
   const stepsComponents = {
-    letsTalk: (
-      <Intermediator
-        title="Привет, ты сыграл турнир, давай поговорим о нем?"
-        setNextButtonDisabled={setNextButtonDisabled}
-      />
-    ),
     tournamentName: (
       <SingleLineTextInput masterValue={masterValue}
         changeMasterValue={changeMasterValue}
@@ -1379,26 +1372,24 @@ const AppInner = () => {
   return (
     <>
       <div className="header">
-        <UilDiary className="icon" />
-        <h3>Твой спортивный дневник</h3>
+        <img src={logo} />
       </div>
       <div className="step-body">{stepsComponents[currentStep]}</div>
       <div className="footer">
         <div className="buttons-bar">
-          <button
-            className="button-previous"
-            disabled={currentStep === "letsTalk"}
-            onClick={() => dispatch(goToPrevious())}
-          >
-            <UilArrowLeft />
-          </button>
           <button
             className="button-next"
             disabled={nextButtonDisabled || currentStep === "finisher"}
             onClick={() => dispatch(goToNext())}
           >
             <span>Далее</span>
-            <UilArrowRight />
+          </button>
+          <button
+            className="button-previous"
+            disabled={currentStep === "tournamentName"}
+            onClick={() => dispatch(goToPrevious())}
+          >
+            Вернуться назад
           </button>
         </div>
       </div>

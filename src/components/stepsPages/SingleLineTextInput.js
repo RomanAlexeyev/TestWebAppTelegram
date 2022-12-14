@@ -16,6 +16,7 @@ export const SingleLineTextInput = ({
       <div className="question-body">
         <input
           type="text"
+          placeholder="Введите ответ"
           className="question-input-text"
           value={masterValue[masterValueKey]}
           onChange={(e) => changeMasterValue(masterValueKey, e.target.value)}

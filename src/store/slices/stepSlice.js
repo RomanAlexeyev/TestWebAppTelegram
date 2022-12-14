@@ -1,36 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const initialSteps = [
-    "letsTalk",
     "tournamentName",
     "tournamentDate",
-    "emotionsBeforeTournament",
-    "senseOfDuty",
-    "innerLevelOfReadiness",
-    "readinessLevelRating",
-    "happinessBeforeTournamentLevelRating",
-    "anxietyBeforeTournamentLevelRating",
-    "tasksForTournament",
-    "mostInterestingMatch",
-    "mostInterestingMatchOpponents",
-    "mostInterestingMatchVictory",
-    "mostInterestingMatchResult",
-    "mostInterestingMatchBeforeEmotions",
-    "innerLevelOfReadinessBeforeMatch",
-    "readinessLevelBeforeMatchRating",
-    "happinessBeforeMatchLevelRating",
-    "anxietyBeforeMatchLevelRating",
-    // "letsTalkAboutWarmup",
-    // "warmupWays",
-    // "emotionsDuringWarmup",
-    // "warmupSummary",
+    "emotionsBeforeTournament"
   ];
 
 const stepSlice = createSlice({
     name: "steps",
     initialState: {
         steps: initialSteps,
-        currentStep: "letsTalk",
+        currentStep: "tournamentName",
     },
     reducers: {
         goToPrevious(state) {

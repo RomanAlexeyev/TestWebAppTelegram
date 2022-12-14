@@ -15,7 +15,7 @@ export const MultiLineTextInput = ({
       <div className="question-title">{title}</div>
       <div className="question-body">
         <textarea
-          rows="10"
+          rows="8"
           className="question-input-text"
           value={masterValue[masterValueKey]}
           onChange={(e) =>

@@ -3,8 +3,46 @@ import { createSlice } from "@reduxjs/toolkit";
 export const initialSteps = [
     "tournamentName",
     "tournamentDate",
-    "emotionsBeforeTournament"
-  ];
+    "emotionsBeforeTournament",
+    "senseOfDuty",
+    "innerLevelOfReadiness",
+    "readinessLevelRating",
+    "happinessBeforeTournamentLevelRating",
+    "anxietyBeforeTournamentLevelRating",
+    "tasksForTournament",
+    "mostInterestingMatch",
+    "mostInterestingMatchOpponents",
+    "mostInterestingMatchVictory",
+    "mostInterestingMatchResult",
+    "mostInterestingMatchBeforeEmotions",
+    "innerLevelOfReadinessBeforeMatch",
+    "readinessLevelBeforeMatchRating",
+    "happinessBeforeMatchLevelRating",
+    "anxietyBeforeMatchLevelRating",
+    "tasksForThisMatch",
+    "letsTalkAboutThisMatch",
+    "breakingPoint",
+    "emotionsDuringMatch",
+    "satisfactionDuringMatchRating",
+    "happinessDuringMatchRating",
+    "anxietyDuringMatchRating",
+    "senseOfDutyDuringMatch",
+    "letsTalkAboutEmotionsAfterMatch",
+    "emotionsAfterMatch",
+    "readinessLevelAfterMatchRating",
+    "happinessLevelAfterMatchRating",
+    "anxietyLevelAfterMatchRating",
+    "letsTalkAboutTournamentResults",
+    "tournamentResultsPlace",
+    "tournamentResultsEmotions",
+    "readinessLevelAfterTournamentRating",
+    "happinessLevelAfterTournamentRating",
+    "anxietyLevelAfterTournamentRating",
+    "tournamentWins",
+    "tournamentFails",
+    "tournamentTodos",
+    "finisher",
+];
 
 const stepSlice = createSlice({
     name: "steps",
@@ -17,14 +55,14 @@ const stepSlice = createSlice({
             const index = state.steps.indexOf(state.currentStep);
             state.currentStep = state.steps[index - 1];
         },
-        goToNext (state) {
+        goToNext(state) {
             const index = state.steps.indexOf(state.currentStep);
             state.currentStep = state.steps[index + 1];
         },
-        setSteps (state, action) {
+        setSteps(state, action) {
             state.steps = action.payload;
         }
-        
+
         //     if (index === state.steps.length-1) {
         //       const data = {
         //         queryId: tg.initDataUnsafe?.query_id,

@@ -7,6 +7,7 @@ import heroImage from "./assets/images/hero-image.svg"
 import { goToNext, goToPrevious, setSteps } from "./store/slices/stepSlice";
 import { useDispatch, useSelector } from "react-redux";
 
+import { ProgressBar } from "./components/elements/ProgressBar";
 import { Intermediator } from "./components/stepsPages/Intermediator";
 import { SingleLineTextInput } from "./components/stepsPages/SingleLineTextInput";
 import { MultiLineTextInput } from "./components/stepsPages/MultiLineTextInput";
@@ -274,7 +275,7 @@ const AppInner = () => {
         "letsTalkAboutThisMatch",
         "breakingPoint"
       ],
-      chunk_5: [],
+      chunk_5: chunk_5_initialBreakingPoint,
       chunk_6: [
         "senseOfDutyDuringMatch",
       ],
@@ -321,8 +322,6 @@ const AppInner = () => {
       steps.chunk_5 = chunk_5_initialBreakingPoint;
     } else if (masterValue.breakingPoint === false) {
       steps.chunk_5 = chunk_5_initialNoBreakingPoint;
-    } else {
-      steps.chunk_5 = [];
     }
 
     if (!masterValue.breakingPoint && !!masterValue.emotionsDuringMatch.length) {
@@ -1372,9 +1371,7 @@ const AppInner = () => {
       </div>
       <div className="step-body">{stepsComponents[currentStep]}</div>
       <div className="footer">
-        <div className="progress-bar-container">
-          <div className="progress-bar-background"></div>
-        </div>
+        <ProgressBar />
         <div className="buttons-bar">
           <button
             className="button-next"

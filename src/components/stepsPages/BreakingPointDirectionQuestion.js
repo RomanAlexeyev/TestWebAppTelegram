@@ -8,7 +8,6 @@ export const BreakingPointDirectionQuestion = ({ masterValue, changeMasterValue,
     const checkboxHandler = (value) => {
         changeMasterValue("breakingPointDirection", value);
     };
-    console.log(masterValue)
 
     const breakingPointDirections = [
         {

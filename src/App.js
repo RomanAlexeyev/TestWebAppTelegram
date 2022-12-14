@@ -1372,6 +1372,9 @@ const AppInner = () => {
       </div>
       <div className="step-body">{stepsComponents[currentStep]}</div>
       <div className="footer">
+        <div className="progress-bar-container">
+          <div className="progress-bar-background"></div>
+        </div>
         <div className="buttons-bar">
           <button
             className="button-next"

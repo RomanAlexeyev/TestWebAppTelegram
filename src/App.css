@@ -40,6 +40,28 @@ h3 {
     font-weight: 500;
 }
 
+button {
+    cursor: pointer;
+    width: 85%;
+    margin: 2rem;
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 300;
+    font-family: 'PT Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    border: none;
+    border-radius: 3rem;
+    background: linear-gradient(180deg, #9CDC43 0%, #70AB3A 100%);
+    transition: background-color 0.3s ease;
+}
+
+button:disabled {
+    opacity: 0.3;
+}
+
 .container {
     min-height: 100vh;
     position: relative;
@@ -116,27 +138,22 @@ h3 {
     align-items: center;
 }
 
-
-
 .header {
     width: 8rem;
     margin: 1.5rem;
 }
 
 .footer {
-        width: 100%;
+    width: 100%;
     position: absolute;
     bottom: 0;
     align-items: center;
-    border-top-left-radius: 1.5rem;
-    border-top-right-radius: 1.5rem;
-    padding: 1.5rem 1rem;
-    background-color: var(--background-green-color);
+    background: white;
     justify-content: center;
 }
 
 .step-body {
-    height: calc(100vh - 18rem);
+    height: calc(100vh - 20rem);
     width: 100%;
     padding: 1.5rem;
     padding-top: 0;
@@ -156,44 +173,39 @@ h3 {
     width: 100%;
 }
 
-.progress-bar {
+.progress-bar-container {
     width: 100%;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.progress-bar-background {
+    width: 85%;
+    height: 6px;
+    border-radius: 10px;
+    background: #EDE7F5;
 }
 
 .buttons-bar {
+    background-color: var(--background-green-color);
+    border-top-left-radius: 1.5rem;
+    border-top-right-radius: 1.5rem;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 2rem 0;
+    padding-top: 1.5rem;
 }
 
 .buttons-bar button {
-    margin: 0.75rem;
+    margin: 0.25rem;
     font-size: 1rem;
     padding: 1rem;
 }
 
-button {
-    cursor: pointer;
-    width: 90%;
-    margin: 2rem;
-    color: white;
-    font-size: 1.25rem;
-    font-weight: 300;
-    font-family: 'PT Sans', sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.25rem;
-    border: none;
-    border-radius: 3rem;
-    background: linear-gradient(180deg, #9CDC43 0%, #70AB3A 100%);
-    transition: background-color 0.3s ease;
-}
-
-button:disabled {
-    opacity: 0.3;
-}
 
 .button-previous {
     background: none;
